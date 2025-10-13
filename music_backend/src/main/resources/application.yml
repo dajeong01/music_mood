@@ -1,0 +1,42 @@
+spring:
+  profiles:
+    active: local
+    group:
+      local: local-server, common, secret
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local-server
+
+---
+
+app:
+  web-host: http://localhost:8080
+
+spring:
+  config:
+    activate:
+      on-profile: common
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/music_mood?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      idle-timeout: 30000
+      max-lifetime: 30000
+      connection-timeout: 30000
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: org.example.music_mood.domain
