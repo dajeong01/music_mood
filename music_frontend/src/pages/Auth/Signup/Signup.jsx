@@ -2,16 +2,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { reqCheckNickname, reqRegisterUser } from "../../../api/User/UserApi";
-import {
-  SIGNUP_REGEX,
-  SIGNUP_REGEX_ERROR_MESSAGE,
-} from "../../../constants/signupRegex";
+import { SIGNUP_REGEX, SIGNUP_REGEX_ERROR_MESSAGE } from "../../../constants/signupRegex";
 
 function Signup() {
+  
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
-
   const email = searchParams.get("email");
   const providerId = searchParams.get("providerId");
   const oauthType = searchParams.get("oauthType");
@@ -93,8 +90,7 @@ function Signup() {
   };
 
   const isNicknameValid = SIGNUP_REGEX.nickName.test(user.nickname);
-  const isUserValid =
-    user.fullName.trim() && user.isNicknameChecked && isNicknameValid;
+  const isUserValid = user.fullName.trim() && user.isNicknameChecked && isNicknameValid;
 
   return (
     <div>
@@ -107,32 +103,19 @@ function Signup() {
 
       <div>
         <h3>이름</h3>
-        <input
-          value={user.fullName}
-          onChange={(e) => updateUser("fullName", e.target.value)}
-          required
-        />
+        <input value={user.fullName} onChange={(e) => updateUser("fullName", e.target.value)} required />
       </div>
 
       <div>
         <h3>닉네임</h3>
-        <input
-          type="text"
-          value={user.nickname}
-          onChange={handleNicknameChange}
-          required
-        />
+        <input type="text" value={user.nickname} onChange={handleNicknameChange} required />
         <button onClick={handleCheckNickname} disabled={!user.nickname.trim()}>
           {user.isNicknameChecked ? "❤️ 사용 가능!" : "닉네임 중복 확인"}
         </button>
         {errors.nickname && <p style={{ color: "red" }}>{errors.nickname}</p>}
       </div>
 
-      <button
-        type="button"
-        onClick={handleOnRegisterUser}
-        disabled={!isUserValid}
-      >
+      <button type="button" onClick={handleOnRegisterUser} disabled={!isUserValid}>
         회원가입 완료
       </button>
     </div>

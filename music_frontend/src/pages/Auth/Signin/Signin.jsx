@@ -9,48 +9,44 @@ import { baseURL } from "../../../api/axios";
 import * as s from "./styles";
 
 function Signin() {
-  const handleLogin = (provider) => {
-    window.location.href = `${baseURL}/oauth2/authorization/${provider}`;
-  };
-
-  const navigate = useNavigate("");
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [isAccessToken, setIsAccessToken] = useState("");
-
   const queryClient = useQueryClient();
 
   useEffect(() => {
     const accessToken = searchParams.get("accessToken");
+    // console.log("🔍 [Signin] URL:", window.location.href);
+    // console.log("🟢 [Signin] accessToken:", accessToken);
 
     if (accessToken) {
       localStorage.setItem("AccessToken", `Bearer ${accessToken}`);
-      setIsAccessToken(accessToken);
+      // console.log("✅ [Signin] localStorage 저장 완료:", localStorage.getItem("AccessToken"));
 
-      queryClient
-        .invalidateQueries({
-          queryKey: ["principal"],
-        })
+      queryClient.invalidateQueries({ queryKey: ["principal"] })
         .then(() => {
-          navigate("/");
+          console.log("✅ [Signin] principal 캐시 무효화 완료, /로 이동");
+          navigate("/weather");
         });
     }
   }, []);
+
+  const handleLogin = (provider) => {
+    console.log("➡️ [Signin] 로그인 요청:", provider);
+    window.location.href = `${baseURL}/oauth2/authorization/${provider}`;
+  };
 
   return (
     <div css={s.container}>
       <div css={s.loginTitle}>Melody Diary</div>
       <div css={s.buttons}>
         <button onClick={() => handleLogin("google")}>
-          <FcGoogle />
-          구글 계정으로 로그인
+          <FcGoogle /> 구글 계정으로 로그인
         </button>
         <button onClick={() => handleLogin("kakao")}>
-          <RiKakaoTalkFill />
-          카카오 계정으로 로그인
+          <RiKakaoTalkFill /> 카카오 계정으로 로그인
         </button>
         <button onClick={() => handleLogin("naver")}>
-          <SiNaver />
-          네이버 계정으로 로그인
+          <SiNaver /> 네이버 계정으로 로그인
         </button>
       </div>
     </div>

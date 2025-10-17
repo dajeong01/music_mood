@@ -14,7 +14,7 @@ spring:
 ---
 
 app:
-  web-host: http://localhost:8080
+  web-host: http://localhost:5173
 
 spring:
   config:
