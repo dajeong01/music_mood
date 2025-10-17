@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import * as s from './styles';
 import { IoSearch } from "react-icons/io5";
+import * as s from './styles';
 
 function SearchBox({ value, onChange, onSearch, placeholder = "검색어를 입력하세요.", children}) {
   const handleKeyDown = (e) => {
