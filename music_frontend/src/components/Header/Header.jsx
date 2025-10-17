@@ -5,8 +5,9 @@ import { useState } from "react";
 import { FiUser } from "react-icons/fi";
 import { TbLogout } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
-import * as s from "./styles";
 import usePrincipalQuery from "../../queries/User/usePrincipalQuery";
+import * as s from "./styles";
+import logo from "/assets/images/Melody Diary - MarkMaker Logo.png"; 
 
 function Header() {
   const principalQuery = usePrincipalQuery();
@@ -42,67 +43,27 @@ function Header() {
 
   return (
     <header css={s.header}>
-      <div css={s.logo} onClick={() => handleNavigate("/")}>
-        B R C P
+      {/* 🪶 Melody Diary 로고 */}
+      <div css={s.logoContainer} onClick={() => handleNavigate("/")}>
+        <img src={logo} alt="Melody Diary Logo" css={s.logoImage} />
+        <span css={s.logoText}>Melody Diary</span>
       </div>
 
+      {/* 🔽 상단 네비게이션 */}
       <nav
         css={s.nav}
         onMouseEnter={() => setShowDropdown(true)}
         onMouseLeave={() => setShowDropdown(true)}
       >
         <ul css={s.menu}>
-          <li>
-            <a>크루정보</a>
-          </li>
-          <li>
-            <a>랭킹정보</a>
-          </li>
-          <li>
-            <a>커뮤니티</a>
-          </li>
-          <li>
-            <a>대회일정</a>
-          </li>
-          <li>
-            <a>고객센터</a>
-          </li>
+          <li><a>오늘의 날씨</a></li>
+          <li><a>감정 캘린더</a></li>
+          <li><a>플레이리스트</a></li>
+          <li><a>마이페이지</a></li>
         </ul>
       </nav>
 
-      {showDropdown && (
-        <div
-          css={s.fullDropdown}
-          onMouseEnter={() => setShowDropdown(true)}
-          onMouseLeave={() => setShowDropdown(false)}
-        >
-          <div css={s.menuDetail}>
-            <div>크루정보</div>
-            <div onClick={() => handleNavigate("/crew/register")}>크루등록</div>
-            <div onClick={() => handleNavigate("/crews")}>지역별 크루</div>
-          </div>
-          <div css={s.menuDetail}>
-            <div>랭킹정보</div>
-            <div onClick={() => handleNavigate("/crewRanking")}>크루랭킹</div>
-            <div onClick={() => handleNavigate("/userRanking")}>개인랭킹</div>
-          </div>
-          <div css={s.menuDetail}>
-            <div>커뮤니티</div>
-            <div onClick={() => handleNavigate("/free")}>자유게시판</div>
-          </div>
-          <div css={s.menuDetail}>
-            <div>대회정보</div>
-            <div onClick={() => handleNavigate("/competition")}>대회일정</div>
-            <div onClick={() => handleNavigate("/calender")}>캘린더</div>
-          </div>
-          <div css={s.menuDetail}>
-            <div>고객센터</div>
-            <div onClick={() => handleNavigate("/notice")}>공지사항</div>
-            <div onClick={() => handleNavigate("/ask")}>러너의 소리</div>
-          </div>
-        </div>
-      )}
-
+      {/* 👤 유저 관련 아이콘 */}
       <div css={s.icons}>
         {userInfo?.role === "ROLE_ADMIN" && (
           <div css={s.icon} onClick={handleAdminPageOnClick}>
@@ -118,14 +79,11 @@ function Header() {
             <FiUser />
           )}
         </div>
-        {
-          userInfo && 
-          (
-            <div css={s.icon} onClick={handleLogout}>
-              <TbLogout />
-            </div>
-          )
-        }
+        {userInfo && (
+          <div css={s.icon} onClick={handleLogout}>
+            <TbLogout />
+          </div>
+        )}
       </div>
     </header>
   );

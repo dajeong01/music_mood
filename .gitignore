@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Secret 파일
+/music_backend/src/main/resources/application-secret.yml

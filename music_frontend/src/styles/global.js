@@ -1,16 +1,15 @@
 import { css } from "@emotion/react";
 
 export const global = css`
-  @import url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Thin.woff') format('woff');
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
 
   html {
-    font-size: 62.5%;
-    font-family: 'Pretendard';
+    font-size: 62.5%; /* 1rem = 10px */
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
     font-weight: 400;
-    font-display: swap;
     background-color: #fff;
+    color: var(--main-color);
   }
-
 
   html,
   body,
@@ -18,12 +17,13 @@ export const global = css`
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100vh;
+    min-height: 100%;
     overflow-x: hidden;
   }
 
   #root {
-    font-size: 1.4rem;
+    font-size: 1.4rem; /* 기본 폰트 크기 */
+    line-height: 1.6;
   }
 
   :root {
@@ -31,5 +31,28 @@ export const global = css`
     --sub-color: #ebebeb;
     --point-color: #fa2847;
     --hB-color: rgba(129, 126, 126, 0.1);
+    --bg-color: #fffaf5;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  button {
+    cursor: pointer;
+    font-family: inherit;
+    border: none;
+    background: none;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
   }
 `;

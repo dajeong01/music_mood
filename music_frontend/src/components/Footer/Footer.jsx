@@ -1,7 +1,6 @@
-import React from 'react';
 /** @jsxImportSource @emotion/react */
+import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 import * as s from './styles';
-import { FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
 
 function Footer() {
   return (

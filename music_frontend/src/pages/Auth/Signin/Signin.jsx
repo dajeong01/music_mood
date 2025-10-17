@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import * as s from "./styles";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { FcGoogle } from "react-icons/fc";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { SiNaver } from "react-icons/si";
-import { FcGoogle } from "react-icons/fc";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { baseURL } from "../../../api/axios";
+import * as s from "./styles";
 
 function Signin() {
   const handleLogin = (provider) => {
@@ -38,7 +38,7 @@ function Signin() {
 
   return (
     <div css={s.container}>
-      <div css={s.loginTitle}>BRCP LOGIN</div>
+      <div css={s.loginTitle}>Melody Diary</div>
       <div css={s.buttons}>
         <button onClick={() => handleLogin("google")}>
           <FcGoogle />

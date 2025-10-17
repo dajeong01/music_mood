@@ -23,14 +23,28 @@ public class JwtFilter implements Filter {
     private final UserMapper userMapper;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
+
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        boolean isOption = request.getMethod().equalsIgnoreCase("OPTION");
-        if (isOption) {
+        System.out.println("[JwtFilter] Request URI: " + request.getRequestURI());
+        System.out.println("[JwtFilter] Authorization: " + request.getHeader("Authorization"));
+
+
+        // ✅ 1. OPTIONS 요청은 바로 통과 (CORS preflight)
+        if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
+        // ✅ 2. 인증 불필요한 URL은 바로 통과
+        String uri = request.getRequestURI();
+        if (uri.startsWith("/auth/") || uri.startsWith("/api/public/")) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
+        // ✅ 3. JWT 인증 진행
         String authorization = request.getHeader("Authorization");
         authenticate(authorization);
 
@@ -39,14 +53,10 @@ public class JwtFilter implements Filter {
 
     private void authenticate(String token) {
         String validatedToken = jwtUtil.validateBearerToken(token);
-        if (validatedToken == null) {
-            return;
-        }
+        if (validatedToken == null) return;
 
         Claims claims = jwtUtil.getClaims(validatedToken);
-        if (claims == null) {
-            return;
-        }
+        if (claims == null) return;
 
         setAuthentication(claims);
     }
@@ -54,11 +64,11 @@ public class JwtFilter implements Filter {
     private void setAuthentication(Claims claims) {
         Integer userId = (Integer) claims.get("userId");
         User foundUser = userMapper.findById(userId);
-        if (foundUser == null) {
-            return;
-        }
+        if (foundUser == null) return;
+
         PrincipalUser principal = PrincipalUser.builder().user(foundUser).build();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
