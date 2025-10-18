@@ -1,82 +1,78 @@
 import { css } from "@emotion/react";
 
-export const sidebarContainer = css`
+export const wrapper = css`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 230px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 240px;
   height: 100vh;
-  background-color: #ffffff;
-  border-right: 1px solid #eaeaea;
-  padding: 20px 18px;
+  padding: 40px 20px;
+  background: linear-gradient(180deg, #f9fafb 0%, #f3f4f6 100%);
+  border-right: 1px solid #e1e1e1;
+  font-family: "Gamja Flower", "Segoe UI", sans-serif;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
 `;
 
 export const logoBox = css`
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 56px;
+  width: 100%;
+
+  h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #7a8c43;
+    letter-spacing: 0.5px;
+  }
 `;
 
-export const logoImage = css`
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-`;
-
-export const logoTitle = css`
-  font-size: 18px;
-  font-weight: 700;
-  color: #2c2c2c;
+export const logoImg = css`
+  width: 20rem;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 10px;
 `;
 
 export const menuList = css`
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  color: #333;
-  font-size: 15px;
+  gap: 14px;
+  width: 100%;
 `;
 
 export const menuItem = css`
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  border-radius: 8px;
+  gap: 12px;
+  padding: 12px 16px;
+  font-size: 17px;
+  color: #444;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.25s ease;
+  font-weight: 500;
+
+  svg {
+    color: #555;
+    stroke-width: 1.8;
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+  }
 
   &:hover {
-    background-color: #f7f7f7;
+    background: #eaf0ff;
+    color: #2c56d2;
+
+    svg {
+      color: #2c56d2;
+    }
   }
 
   span {
-    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
   }
-`;
-
-export const userSection = css`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding-top: 20px;
-  border-top: 1px solid #f0f0f0;
-`;
-
-export const userIcon = css`
-  background-color: #f0f0f0;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: #555;
-`;
-
-export const username = css`
-  font-size: 14px;
-  color: #555;
 `;

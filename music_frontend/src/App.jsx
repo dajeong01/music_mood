@@ -1,7 +1,6 @@
 import ReactModal from "react-modal";
 import { Route, Routes } from "react-router-dom";
 // import Header from "./components/Header/Header";
-import LoginSuccess from "./pages/Auth/Signin/LoginSuccess";
 import Signin from "./pages/Auth/Signin/Signin";
 import Signup from "./pages/Auth/Signup/Signup";
 import Home from "./pages/home/Home";

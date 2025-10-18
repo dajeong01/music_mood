@@ -2,6 +2,7 @@
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 import * as s from './styles';
 
+
 function Footer() {
   return (
     <footer css={s.footer}>
