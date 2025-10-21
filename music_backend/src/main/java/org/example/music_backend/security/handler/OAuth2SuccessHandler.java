@@ -30,11 +30,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
 
-        System.out.println("✅ [OAuth2SuccessHandler] onAuthenticationSuccess() 호출됨");
+//        System.out.println("✅ [OAuth2SuccessHandler] onAuthenticationSuccess() 호출됨");
 
         PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
         User user = principalUser.getUser();
-        System.out.println("✅ [OAuth2SuccessHandler] 로그인 성공 - 사용자 이메일: " + user.getEmail());
+//        System.out.println("✅ [OAuth2SuccessHandler] 로그인 성공 - 사용자 이메일: " + user.getEmail());
 
         String redirectUrl;
         User foundUser = userMapper.findByEmail(user.getEmail());
@@ -50,17 +50,17 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     webHost, email, providerId, oauthType
             );
 
-            System.out.println("🟢 [OAuth2SuccessHandler] 신규 유저 → 회원가입 페이지 리다이렉트");
+//            System.out.println("🟢 [OAuth2SuccessHandler] 신규 유저 → 회원가입 페이지 리다이렉트");
         } else {
             // 기존 유저 → 로그인 완료 → 토큰 생성 후 프론트로 전달
             String accessToken = jwtUtil.generateAccessToken(foundUser);
-            System.out.println("🟢 [OAuth2SuccessHandler] 기존 유저 accessToken 생성 완료: " + accessToken);
+//            System.out.println("🟢 [OAuth2SuccessHandler] 기존 유저 accessToken 생성 완료: " + accessToken);
 
             redirectUrl = String.format("%s/auth/oauth2/signin?accessToken=%s", webHost, accessToken);
-            System.out.println("🟢 [OAuth2SuccessHandler] 기존 유저 → 로그인 완료 리다이렉트 URL: " + redirectUrl);
+//            System.out.println("🟢 [OAuth2SuccessHandler] 기존 유저 → 로그인 완료 리다이렉트 URL: " + redirectUrl);
         }
 
-        System.out.println("➡️ [OAuth2SuccessHandler] 최종 Redirect URL: " + redirectUrl);
+//        System.out.println("➡️ [OAuth2SuccessHandler] 최종 Redirect URL: " + redirectUrl);
         response.sendRedirect(redirectUrl);
     }
 }
