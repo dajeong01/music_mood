@@ -2,218 +2,159 @@ import { css } from "@emotion/react";
 
 export const pageWrapper = css`
   display: flex;
-  flex-direction: row;
-  height: 100vh;
-  background: #f8f5f2; /* 전체 배경색을 따뜻한 크림색으로 */
-  font-family: "Pretendard", "Gamja Flower", sans-serif; /* 폰트 우선순위 조정 */
+  min-height: 100vh;
+  background: #fffdf9;
+  // background: #F7F3E8;
+  // background: #FAF7EE;
+  // background: #F1F3EE;
+  // background: #F9F2F0;
+  // background: #F0F3F5;
+  
+
 `;
 
 export const container = css`
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 36px; /* 전체 간격 조금 더 넓게 */
-  padding: 40px 50px; /* 패딩 증가 */
-  overflow: hidden;
+  grid-template-columns: 1fr 0.9fr; /* 좌/우 2열 */
+  gap: 20px;
+  padding: 20px;
+  overflow: hidden; /* 각 컬럼 내부만 스크롤 */
 `;
 
 export const leftScroll = css`
-  overflow-y: auto;
-  padding-right: 18px; /* 스크롤바와의 여백 증가 */
   display: flex;
   flex-direction: column;
-  gap: 30px; /* 섹션 간 간격 증가 */
-
-  &::-webkit-scrollbar {
-    width: 8px; /* 스크롤바 너비 증가 */
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #d4b996; /* 스크롤바 색상을 따뜻한 톤으로 */
-    border-radius: 8px;
-    border: 2px solid #f8f5f2; /* 스크롤바 테두리 색상 */
-  }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
+  align-items: stretch; /* ✅ 변경 */
+  margin-top: 2rem;
 `;
 
 export const rightScroll = css`
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 30px; /* 섹션 간 간격 증가 */
-  padding-right: 18px; /* 스크롤바와의 여백 증가 */
-
-  &::-webkit-scrollbar {
-    width: 8px; /* 스크롤바 너비 증가 */
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #d4b996; /* 스크롤바 색상을 따뜻한 톤으로 */
-    border-radius: 8px;
-    border: 2px solid #f8f5f2; /* 스크롤바 테두리 색상 */
-  }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
+  padding-left: 4px;
+  margin-right: 3rem;
 `;
 
-/* 날씨 카드 */
 export const todayBox = css`
-  background: linear-gradient(135deg, #a7d9f7, #c1e6fa); /* 더 부드럽고 밝은 파란색 그라데이션 */
-  color: white;
-  border-radius: 25px; /* 모서리 더 둥글게 */
-  padding: 30px; /* 패딩 증가 */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* 그림자 강화 */
+  background: linear-gradient(180deg, #fff9ed, #fff);
+  border-radius: 20px;
+  padding: 28px 30px; /* ✅ 복원: 여백 넓게 */
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 15px;
+  width: 100%;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
 
   .date {
-    font-size: 1.1rem; /* 날짜 글자 크기 조정 */
-    font-weight: 500;
-    margin-bottom: 20px; /* 날짜 아래 간격 증가 */
-    letter-spacing: 0.5px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
   }
+
   .main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px; /* 메인 날씨 아래 간격 증가 */
-
-    .tempBox {
-      .temp {
-        font-size: 5.5rem; /* 온도 글자 크기 더 크게 */
-        font-weight: 700;
-        line-height: 1;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* 온도에 그림자 추가 */
-      }
-      .desc {
-        font-size: 1.5rem; /* 설명 글자 크기 증가 */
-        margin-top: 8px;
-        text-transform: capitalize; /* 첫 글자 대문자 */
-      }
-    }
-    .icon {
-      width: 130px; /* 아이콘 크기 증가 */
-      height: 130px;
-      filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.15)); /* 아이콘에 그림자 추가 */
-    }
+    gap: 20px;
   }
+
+  .tempBox .temp {
+    font-size: 44px; /* ✅ 다시 커지게 */
+    font-weight: 700;
+    color: #ff7043;
+    line-height: 1;
+  }
+
+    /* ✅ 이 부분 수정 */
+  .tempBox .desc {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 16px;
+    color: #444;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    text-align: center;
+  }
+
+  .tempBox .desc .icon {
+    font-size: 22px;
+    line-height: 1;
+    transform: translateY(-1px); /* 살짝 올려서 시각 중심 맞추기 */
+  }
+
+
   .detail {
-    margin-top: 25px;
-    padding-top: 25px;
-    border-top: 1px solid rgba(255, 255, 255, 0.3); /* 구분선 색상 조정 */
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.08);
+    font-size: 15px;
+    color: #555;
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2열 배치 */
-    gap: 15px 25px; /* 간격 조정 */
-    font-size: 1rem; /* 디테일 정보 글자 크기 */
-    line-height: 1.4;
-
-    div {
-      display: flex;
-      align-items: center;
-      gap: 8px; /* 아이콘과 텍스트 사이 간격 */
-      font-weight: 500;
-    }
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 10px;
   }
 `;
 
-/* 5일 예보 */
-export const forecastBox = css`
-  background: #fffdf9; /* 카드 배경색을 따뜻한 크림색으로 */
-  border-radius: 25px; /* 모서리 더 둥글게 */
-  padding: 30px; /* 패딩 증가 */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); /* 그림자 조정 */
+export const cardStyle = css`
+  background: #fffaf5;
+  border-radius: 20px;
+  padding: 18px 16px;
+  text-align: center;
+  width: 100px;
+  min-height: 150px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
 
-  h3 {
-    font-size: 1.3rem; /* 제목 글자 크기 증가 */
-    margin-bottom: 25px; /* 제목 아래 간격 증가 */
-    font-weight: 700;
-    color: #5d4037; /* 제목 색상 조정 */
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  }
 
-    &::before {
-      /* 아이콘 대신 이모지 사용 (옵션) */
-      content: "📆";
-      font-size: 1.3em;
+  .day {
+    font-weight: 600;
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 4px;
+  }
+
+  .temps {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+
+    .max {
+      color: #e57373;
+    }
+    .min {
+      color: #64b5f6;
+    }
+    .slash {
+      margin: 0 4px;
+      color: #aaa;
     }
   }
-  .forecastList {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* 리스트 아이템 간 간격 증가 */
-  }
-  .forecastCard {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* 양쪽 정렬 */
-    padding: 15px 20px; /* 패딩 증가 */
-    border-radius: 18px; /* 둥근 정도 조정 */
-    background: #fdfaf7; /* 개별 카드 배경색 */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); /* 개별 카드 그림자 */
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-
-    .day {
-      width: 60px; /* 요일 너비 고정 */
-      font-weight: 600;
-      color: #7a6e6a; /* 요일 색상 조정 */
-      font-size: 1.05rem;
-    }
-    img {
-      width: 60px; /* 아이콘 크기 증가 */
-      height: 60px;
-      margin-right: 10px; /* 아이콘 오른쪽 여백 */
-    }
-    .temps {
-      margin-left: auto; /* 온도 정보를 오른쪽으로 밀기 */
-      display: flex;
-      align-items: baseline;
-      gap: 5px;
-
-      .max {
-        color: #e11d48; /* 빨간색 유지 */
-        font-weight: 700;
-        font-size: 1.1rem;
-      }
-      .min {
-        color: #2563eb; /* 파란색 유지 */
-        font-weight: 500;
-        font-size: 0.95rem;
-      }
-      .slash {
-        color: #b0a49f; /* 슬래시 색상 조정 */
-        font-size: 0.95rem;
-      }
-    }
-    .desc {
-      color: #8b7d76; /* 설명 색상 조정 */
-      font-size: 0.95rem;
-      width: 80px; /* 설명 너비 고정 */
-      text-align: right;
-      text-transform: capitalize;
-    }
+  .desc {
+    font-size: 13px;
+    color: #555;
+    margin-top: 6px;
+    font-weight: 500;
   }
 `;
 
-/* 플레이리스트 */
-export const playlistBox = css`
-  background: #fffdf9;
-  border-radius: 25px;
-  padding: 30px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-
-  h2 {
-    font-weight: 700;
-    font-size: 1.3rem;
-    color: #5d4037;
-    margin-bottom: 25px;
-  }
+export const loading = css`
+  display: grid;
+  place-items: center;
+  height: 60vh;
+  color: #6b7280;
+  font-size: 15px;
 `;
-
 export const playlistList = css`
   display: flex;
   flex-direction: column;
@@ -223,46 +164,46 @@ export const playlistList = css`
 export const playItem = css`
   display: flex;
   align-items: center;
-  gap: 15px; /* 간격 조정 */
+  gap: 15px;
   background: #fdfaf7;
   border-radius: 18px;
-  padding: 12px 18px; /* 패딩 조정 */
+  padding: 12px 18px;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 
   &:hover {
-    background: #f6efe9; /* 호버 시 색상 조정 */
+    background: #f6efe9;
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
   .info {
     flex-grow: 1;
-    margin-left: 0; /* 기존 마진 제거 */
+    margin-left: 0;
   }
 
   .title {
     font-weight: 600;
-    color: #4a3c35; /* 제목 색상 조정 */
-    font-size: 1.05rem;
+    color: #4a3c35;
+    font-size: 1.1rem; /* 제목 글자 크기 증가 */
   }
   .artist {
-    font-size: 0.9rem; /* 아티스트 글자 크기 조정 */
-    color: #8b7d76; /* 아티스트 색상 조정 */
+    font-size: 0.95rem; /* 아티스트 글자 크기 증가 */
+    color: #8b7d76;
     margin-top: 4px;
   }
   .time {
-    font-size: 0.9rem; /* 시간 글자 크기 조정 */
-    color: #b0a49f; /* 시간 색상 조정 */
-    flex-shrink: 0; /* 내용이 길어져도 줄바꿈되지 않도록 */
+    font-size: 0.95rem;
+    color: #b0a49f;
+    flex-shrink: 0;
   }
 `;
 
 export const placeholderImg = css`
-  width: 65px; /* 플레이스홀더 이미지 크기 증가 */
+  width: 65px;
   height: 65px;
-  background: #e6e3df; /* 배경색 조정 */
+  background: #e6e3df;
   border-radius: 12px;
   font-size: 0.9rem;
   font-weight: 700;
@@ -279,10 +220,11 @@ export const moodBox = css`
   border-radius: 25px;
   padding: 30px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  margin-top: 3rem;
 
   h3 {
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: 1.3rem; /* 제목 글자 크기 증가 */
     color: #5d4037;
     margin-bottom: 25px;
   }
@@ -290,35 +232,35 @@ export const moodBox = css`
 
 export const moodList = css`
   display: flex;
-  gap: 20px; /* 간격 증가 */
+  gap: 20px;
   flex-wrap: wrap;
 `;
 
 export const moodItem = (props) => css`
-  flex: 1 1 calc(33.333% - 20px); /* 3개씩 균등 배치, 간격 고려 */
-  min-width: 140px; /* 최소 너비 조정 */
-  height: 160px; /* 높이 조정 */
-  background-color: ${props.color || "#fdf7e6"}; /* 기본 색상 추가 */
+  flex: 1 1 calc(33.333% - 20px);
+  min-width: 140px;
+  height: 100px;
+  background-color: ${props.color || "#fdf7e6"};
   border-radius: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #4a3c35; /* 텍스트 색상 조정 */
+  color: #4a3c35;
   font-weight: 600;
-  font-size: 1.2rem; /* MD 텍스트 크기 조정 */
+  font-size: 1.2rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* 그림자 추가 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
   &:hover {
-    transform: translateY(-5px); /* 더 역동적인 호버 효과 */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 강화 */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   }
 
   p {
-    margin-top: 10px; /* p 태그 위쪽 간격 증가 */
-    font-size: 0.95rem; /* p 태그 글자 크기 조정 */
-    color: #7a6e6a; /* p 태그 색상 조정 */
+    margin-top: 5px;
+    font-size: 1rem; /* 설명 글자 크기 증가 */
+    color: #7a6e6a;
     font-weight: 500;
   }
 `;

@@ -1,130 +1,144 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react";
 import LeftSideBarLayout from "../../components/LeftSideBarLayout/LeftSideBarLayout";
+import WeatherHourlyList from "../../components/Weather/WeatherHourlyList";
+import WeatherList from "../../components/Weather/WeatherList";
+import WeatherLocation from "../../components/Weather/WeatherLocation";
+import useLocationQuery from "../../queries/Weather/useLocationQuery";
+import { getWeatherLabel } from "../../utils/weatherUtils";
 import * as s from "./styles";
 
-const API_KEY = import.meta.env.VITE_OPENWEATHER_KEY;
-
 export default function Weather() {
-  const [weather, setWeather] = useState(null);
-  const [forecast, setForecast] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(() => {
+    return localStorage.getItem("selectedCity") || "부산광역시";
+  });
+  const [selectedDistrict, setSelectedDistrict] = useState(() => {
+    return localStorage.getItem("selectedDistrict") || "해운대구";
+  });
 
   useEffect(() => {
-    const lat = 35.1796;
-    const lon = 129.0756;
+    if (selectedCity) localStorage.setItem("selectedCity", selectedCity);
+  }, [selectedCity]);
 
-    // 현재 날씨
-    const fetchWeather = async () => {
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=kr&appid=${API_KEY}`
-      );
-      const data = await res.json();
-      setWeather(data);
-    };
+  useEffect(() => {
+    if (selectedDistrict) localStorage.setItem("selectedDistrict", selectedDistrict);
+  }, [selectedDistrict]);
 
-    // 5일 예보
-    const fetchForecast = async () => {
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=kr&appid=${API_KEY}`
-      );
-      const data = await res.json();
+  const { coords, weather, forecast, todayHourly, loading } = useLocationQuery(
+    selectedCity,
+    selectedDistrict
+  );
 
-      const grouped = {};
-      data.list.forEach((item) => {
-        const date = item.dt_txt.split(" ")[0];
-        if (!grouped[date]) grouped[date] = [];
-        grouped[date].push(item);
-      });
+  // ✅ 1️⃣ 로딩 중
+  if (loading) return <p>로딩 중...</p>;
 
-      const daily = Object.keys(grouped).map((date) => {
-        const temps = grouped[date].map((t) => t.main.temp);
-        const max = Math.max(...temps);
-        const min = Math.min(...temps);
-        const noon = grouped[date].find((t) => t.dt_txt.includes("12:00:00"));
-        return {
-          date,
-          max,
-          min,
-          weather: noon ? noon.weather[0] : grouped[date][0].weather[0],
-        };
-      });
+  // ✅ 2️⃣ 좌표 또는 날씨 없을 때
+  if (!loading && (!coords || !weather || !weather.main)) {
+    return (
+      <div css={s.pageWrapper}>
+        <LeftSideBarLayout />
+        <div css={s.container}>
+          <div css={s.leftScroll}>
+            <section css={s.todayBox}>
+              <WeatherLocation
+                selectedCity={selectedCity}
+                selectedDistrict={selectedDistrict}
+                onSelectCity={(city) => {
+                  setSelectedCity(city);
+                  setSelectedDistrict(""); // ✅ 도시 바뀌면 구 초기화
+                }}
+                onSelectDistrict={(district) => setSelectedDistrict(district)}
+                onApply={(city, district) => {
+                  console.log("✅ 적용 버튼 클릭:", city, district);
+                }}
+              />
+              <p>구를 선택해 주세요</p>
+            </section>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-      setForecast(daily.slice(0, 5));
-    };
+  // ✅ 3️⃣ 안전하게 값 추출 (weather 존재 확인 후)
+  const date = weather?.dt
+    ? new Date(weather.dt * 1000).toLocaleDateString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long",
+      })
+    : "";
 
-    fetchWeather();
-    fetchForecast();
-  }, []);
-
-  if (!weather) return <p>로딩 중...</p>;
-
-  const date = new Date(weather.dt * 1000).toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    weekday: "long",
-  });
+  const { text, icon } = getWeatherLabel(weather?.weather?.[0]?.description);
 
   return (
     <div css={s.pageWrapper}>
       <LeftSideBarLayout />
+
       <div css={s.container}>
-        {/* 왼쪽 날씨 영역 */}
         <div css={s.leftScroll}>
-          {/* 오늘 날씨 카드 */}
           <section css={s.todayBox}>
             <div className="date">{date}</div>
+            <WeatherLocation
+              selectedCity={selectedCity}
+              selectedDistrict={selectedDistrict}
+              onSelectCity={(city) => {
+                setSelectedCity(city);
+                setSelectedDistrict(""); // ✅ 도시 변경 시 구 초기화
+              }}
+              onSelectDistrict={(district) => setSelectedDistrict(district)}
+              onApply={(city, district) => {
+                console.log("✅ 적용 버튼 클릭:", city, district);
+              }}
+              
+            />
+
+            {/* ✅ 메인 날씨 */}
             <div className="main">
               <div className="tempBox">
                 <p className="temp">{Math.round(weather.main.temp)}°</p>
-                <p className="desc">{weather.weather[0].description}</p>
+                <p className="desc">
+                  <span className="icon">{icon}</span>
+                  <span>{text}</span>
+                </p>
               </div>
-              <img
-                className="icon"
-                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-                alt="날씨 아이콘"
-              />
             </div>
+
+            {/* ✅ 상세 정보 */}
             <div className="detail">
-              <div>🌅 일출 {new Date(weather.sys.sunrise * 1000).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}</div>
-              <div>🌇 일몰 {new Date(weather.sys.sunset * 1000).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}</div>
+              <div>
+                🌅 일출{" "}
+                {new Date(weather.sys.sunrise * 1000).toLocaleTimeString(
+                  "ko-KR",
+                  { hour: "2-digit", minute: "2-digit" }
+                )}
+              </div>
+              <div>
+                🌇 일몰{" "}
+                {new Date(weather.sys.sunset * 1000).toLocaleTimeString(
+                  "ko-KR",
+                  { hour: "2-digit", minute: "2-digit" }
+                )}
+              </div>
               <div>💧 습도 {weather.main.humidity}%</div>
               <div>🌬️ 바람 {weather.wind.speed} m/s</div>
             </div>
           </section>
 
-          {/* 5일 예보 */}
-          <section css={s.forecastBox}>
-            <h3>📆 5일간의 날씨 예보</h3>
-            <div className="forecastList">
-              {forecast.map((item, i) => (
-                <div key={i} className="forecastCard">
-                  <p className="day">
-                    {new Date(item.date).toLocaleDateString("ko-KR", {
-                      weekday: "short",
-                    })}
-                  </p>
-                  <img
-                    src={`https://openweathermap.org/img/wn/${item.weather.icon}.png`}
-                    alt="icon"
-                  />
-                  <div className="temps">
-                    <span className="max">{Math.round(item.max)}°</span>
-                    <span className="slash">/</span>
-                    <span className="min">{Math.round(item.min)}°</span>
-                  </div>
-                  <p className="desc">{item.weather.description}</p>
-                </div>
-              ))}
-            </div>
-          </section>
+          {/* ✅ 시간대별 예보 */}
+          <WeatherHourlyList todayHourly={todayHourly || []} />
+
+          {/* ✅ 주간 예보 */}
+          <WeatherList forecast={forecast || []} />
         </div>
 
+        {/* ✅ 우측 영역 */}
         <div css={s.rightScroll}>
           <section css={s.playlistBox}>
             <h2>오늘 날씨를 위한 플레이리스트</h2>
             <div css={s.playlistList}>
-              {[1, 2, 3, 4].map((i) => (
+              {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} css={s.playItem}>
                   <div css={s.placeholderImg}>MD</div>
                   <div className="info">
@@ -137,18 +151,7 @@ export default function Weather() {
             </div>
           </section>
 
-          {/* <section css={s.emotionBox}>
-            <div css={s.emotionHeader}>
-              <p>오늘의 기분은?</p>
-              <div css={s.emotionBtns}>
-                <div className="btn">😄</div>
-                <div className="btn">😢</div>
-                <div className="btn">😠</div>
-              </div>
-            </div>
-          </section> */}
-
-          {/* 🎵 감정 기반 멜로디 */}
+          {/* ✅ 감정 기반 멜로디 */}
           <section css={s.moodBox}>
             <h3>최근 ‘행복’했던 당신을 위한 멜로디</h3>
             <div css={s.moodList}>

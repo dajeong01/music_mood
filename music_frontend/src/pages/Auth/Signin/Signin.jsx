@@ -24,14 +24,14 @@ function Signin() {
 
       queryClient.invalidateQueries({ queryKey: ["principal"] })
         .then(() => {
-          console.log("✅ [Signin] principal 캐시 무효화 완료, /로 이동");
+          // console.log("✅ [Signin] principal 캐시 무효화 완료, /로 이동");
           navigate("/weather");
         });
     }
   }, []);
 
   const handleLogin = (provider) => {
-    console.log("➡️ [Signin] 로그인 요청:", provider);
+    // console.log("➡️ [Signin] 로그인 요청:", provider);
     window.location.href = `${baseURL}/oauth2/authorization/${provider}`;
   };
 

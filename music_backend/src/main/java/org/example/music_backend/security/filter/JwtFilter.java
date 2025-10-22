@@ -27,8 +27,8 @@ public class JwtFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        System.out.println("[JwtFilter] Request URI: " + request.getRequestURI());
-        System.out.println("[JwtFilter] Authorization: " + request.getHeader("Authorization"));
+//        System.out.println("[JwtFilter] Request URI: " + request.getRequestURI());
+//        System.out.println("[JwtFilter] Authorization: " + request.getHeader("Authorization"));
 
 
         // ✅ 1. OPTIONS 요청은 바로 통과 (CORS preflight)

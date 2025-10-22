@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.music_backend.domain.location.LocationMapper">
+
+    <select id="getAllCities" resultType="string">
+        SELECT DISTINCT city
+        FROM city_district
+        ORDER BY city;
+    </select>
+
+    <select id="getDistrictsByCity" parameterType="string" resultType="string">
+        SELECT district
+        FROM city_district
+        WHERE city = #{city}
+        ORDER BY district;
+    </select>
+
+    <select id="searchLocation" parameterType="map" resultType="org.example.music_backend.domain.location.Location">
+        SELECT city, district, lat, lon
+        FROM city_district
+        WHERE city = #{city}
+        AND district = #{district};
+    </select>
+
+</mapper>
