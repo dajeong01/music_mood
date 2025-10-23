@@ -7,6 +7,7 @@ import WeatherLocation from "../../components/Weather/WeatherLocation";
 import useLocationQuery from "../../queries/Weather/useLocationQuery";
 import { getWeatherLabel } from "../../utils/weatherUtils";
 import * as s from "./styles";
+import { useNavigate } from "react-router-dom";
 
 export default function Weather() {
   const [selectedCity, setSelectedCity] = useState(() => {
@@ -16,6 +17,8 @@ export default function Weather() {
     return localStorage.getItem("selectedDistrict") || "해운대구";
   });
 
+  const navigate = useNavigate("");
+
   useEffect(() => {
     if (selectedCity) localStorage.setItem("selectedCity", selectedCity);
   }, [selectedCity]);
@@ -24,10 +27,7 @@ export default function Weather() {
     if (selectedDistrict) localStorage.setItem("selectedDistrict", selectedDistrict);
   }, [selectedDistrict]);
 
-  const { coords, weather, forecast, todayHourly, loading } = useLocationQuery(
-    selectedCity,
-    selectedDistrict
-  );
+  const { coords, weather, forecast, todayHourly, loading } = useLocationQuery(selectedCity, selectedDistrict);
 
   // ✅ 1️⃣ 로딩 중
   if (loading) return <p>로딩 중...</p>;
@@ -91,7 +91,6 @@ export default function Weather() {
               onApply={(city, district) => {
                 console.log("✅ 적용 버튼 클릭:", city, district);
               }}
-              
             />
 
             {/* ✅ 메인 날씨 */}
@@ -107,20 +106,8 @@ export default function Weather() {
 
             {/* ✅ 상세 정보 */}
             <div className="detail">
-              <div>
-                🌅 일출{" "}
-                {new Date(weather.sys.sunrise * 1000).toLocaleTimeString(
-                  "ko-KR",
-                  { hour: "2-digit", minute: "2-digit" }
-                )}
-              </div>
-              <div>
-                🌇 일몰{" "}
-                {new Date(weather.sys.sunset * 1000).toLocaleTimeString(
-                  "ko-KR",
-                  { hour: "2-digit", minute: "2-digit" }
-                )}
-              </div>
+              <div>🌅 일출 {new Date(weather.sys.sunrise * 1000).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}</div>
+              <div>🌇 일몰 {new Date(weather.sys.sunset * 1000).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}</div>
               <div>💧 습도 {weather.main.humidity}%</div>
               <div>🌬️ 바람 {weather.wind.speed} m/s</div>
             </div>
@@ -136,7 +123,14 @@ export default function Weather() {
         {/* ✅ 우측 영역 */}
         <div css={s.rightScroll}>
           <section css={s.playlistBox}>
-            <h2>오늘 날씨를 위한 플레이리스트</h2>
+
+            <div css={s.playlistHeader}>
+              <h2>오늘 날씨를 위한 플레이리스트</h2>
+              <span css={s.genres} onClick={() => navigate("/mypage")}>
+                관심 있는 장르 편집
+              </span>
+            </div>
+
             <div css={s.playlistList}>
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} css={s.playItem}>

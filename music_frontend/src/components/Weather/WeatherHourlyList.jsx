@@ -33,7 +33,7 @@ const hourlyBox = css`
     font-size: 16px;
     font-weight: 600;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 `;
 
@@ -72,12 +72,12 @@ const hourlyCard = (bgColor) => css`
     font-weight: 600;
     color: #333;
     font-size: 14px;
-    margin-bottom: 6px;
+    margin-bottom: 3px;
   }
 
   .icon {
     font-size: 28px;
-    margin: 6px 0;
+    margin: 1px 0;
   }
 
   img {
@@ -89,7 +89,7 @@ const hourlyCard = (bgColor) => css`
   .temp {
     font-weight: 700;
     color: #ff7043; /* 따뜻한 오렌지톤 (기온) */
-    margin-top: 6px;
+    margin-top: 2px;
     font-size: 15px;
   }
 

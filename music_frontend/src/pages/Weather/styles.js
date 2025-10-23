@@ -9,8 +9,6 @@ export const pageWrapper = css`
   // background: #F1F3EE;
   // background: #F9F2F0;
   // background: #F0F3F5;
-  
-
 `;
 
 export const container = css`
@@ -68,7 +66,7 @@ export const todayBox = css`
     line-height: 1;
   }
 
-    /* ✅ 이 부분 수정 */
+  /* ✅ 이 부분 수정 */
   .tempBox .desc {
     margin-top: 8px;
     display: inline-flex;
@@ -87,7 +85,6 @@ export const todayBox = css`
     line-height: 1;
     transform: translateY(-1px); /* 살짝 올려서 시각 중심 맞추기 */
   }
-
 
   .detail {
     margin-top: 10px;
@@ -148,13 +145,36 @@ export const cardStyle = css`
   }
 `;
 
-export const loading = css`
-  display: grid;
-  place-items: center;
-  height: 60vh;
-  color: #6b7280;
-  font-size: 15px;
+export const playlistBox = css`
+  /* 전체 박스 */
+  padding: 10px 0;
 `;
+
+export const playlistHeader = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #5d4037;
+    margin: 0;
+  }
+`;
+
+export const genres = css`
+  font-size: 14px;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #1a0a03ff;
+  }
+`;
+
 export const playlistList = css`
   display: flex;
   flex-direction: column;
@@ -263,4 +283,12 @@ export const moodItem = (props) => css`
     color: #7a6e6a;
     font-weight: 500;
   }
+`;
+
+export const loading = css`
+  display: grid;
+  place-items: center;
+  height: 60vh;
+  color: #6b7280;
+  font-size: 15px;
 `;

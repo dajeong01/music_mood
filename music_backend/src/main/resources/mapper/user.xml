@@ -60,4 +60,12 @@
         where
             nickname = #{nickname}
     </select>
+    <select id="getUserDetail" resultType="org.example.music_backend.domain.user.User">
+        select
+            *
+        from
+            user_tb
+        where
+            user_id = #{userId}
+    </select>
 </mapper>

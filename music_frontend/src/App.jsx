@@ -5,6 +5,7 @@ import Signin from "./pages/Auth/Signin/Signin";
 import Signup from "./pages/Auth/Signup/Signup";
 import Home from "./pages/home/Home";
 import Weather from "./pages/Weather/Weather";
+import MyPage from "./pages/MyPage/MyPage";
 
 function App() {
   ReactModal.setAppElement("#root");
@@ -16,6 +17,7 @@ function App() {
         <Route path="/auth/oauth2/signin" element={<Signin />} />
         <Route path="/oauth/signup" element={<Signup />} />
         <Route path="/weather" element={<Weather />} />
+        <Route path="/mypage" element={<MyPage />} />
       </Routes>
 
       {/* <Footer /> */}

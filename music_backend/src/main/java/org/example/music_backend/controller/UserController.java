@@ -8,19 +8,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/users")
+    @PostMapping
     public ResponseEntity<ResponseDto<?>> register(@RequestBody UserRegisterReqDto dto) {
         return ResponseEntity.ok(ResponseDto.success(userService.register(dto)));
     }
 
-    @GetMapping("/users/nickname/check")
+    @GetMapping("/nickname/check")
     public ResponseEntity<ResponseDto<?>> checkNickname(@RequestParam String nickname) {
         return ResponseEntity.ok(ResponseDto.success(userService.checkNickname(nickname)));
     }
+
+    @GetMapping("/detail")
+    public ResponseEntity<ResponseDto<?>> getUserDetail() {
+        return ResponseEntity.ok(ResponseDto.success(userService.getUserDetail()));
+    }
+
 }
