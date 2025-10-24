@@ -1,8 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { useQueryClient } from "@tanstack/react-query";
-import { Bell, Edit2, LogOut, Music2, PieChart, Settings, Sun, Trash2 } from "lucide-react";
+import { Bell, LogOut, Music2, PieChart, Settings, Sun, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LeftSideBarLayout from "../../components/LeftSideBarLayout/LeftSideBarLayout";
+import GenreEditModal from "../../components/MyPage/GenreEdit/GenreEditModal";
+import NicknameEditor from "../../components/MyPage/Profile/NicknameEditor";
 import useUserDetailQuery from "../../queries/User/useUserDetailQuery";
 import * as s from "./styles";
 
@@ -77,7 +80,7 @@ const mockHeatmapData = [
 function EmotionHeatmap() {
   return (
     <div css={s.heatmapSection}>
-      <h3 css={s.subTitle}>나의 감정 기록 (최근 8주)</h3>
+      <h3 css={s.subTitle}>나의 감정 기록 (최근 4주)</h3>
       <div css={s.heatmapGrid}>
         {mockHeatmapData.map((level, index) => (
           <div key={index} css={s.heatmapDay(level)} />
@@ -91,10 +94,17 @@ export default function MyPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { data, isLoading, isError } = useUserDetailQuery();
+  const { data, isLoading, isError, refetch } = useUserDetailQuery();
   // console.log(data?.data?.body);
   const user = data?.data?.body[0];
-  console.log(user)
+  console.log(user);
+
+  const [isGenreModalOpen, setIsGenreModalOpen] = useState(false);
+
+  const handleGenreUpdate = (newGenres) => {
+    // TODO: 서버 갱신 후 상태 업데이트
+    console.log("✅ 업데이트된 장르:", newGenres);
+  };
 
   const handleLogout = () => {
     console.log("로그아웃 시도");
@@ -118,17 +128,13 @@ export default function MyPage() {
         <div css={s.mainGrid}>
           <div css={s.gridColumnLeft}>
             <section css={[s.card, s.profileCard]}>
-              {/* 프로필 이미지 없으면 기본 아이콘 대체 */}
               <div css={s.profileImgWrapper}>
                 <img src={`https://placehold.co/100x100/F8E9D7/5D4037?text=${user.nickname?.slice(0, 2) || "MD"}`} alt="프로필 이미지" css={s.profileImg} />
               </div>
 
               <div css={s.profileInfo}>
                 <div css={s.profileHeader}>
-                  <span css={s.nickname}>{user.nickname}</span>
-                  <button css={s.editButton}>
-                    <Edit2 size={16} /> 프로필 수정
-                  </button>
+                  <NicknameEditor nickname={user.nickname} onUpdated={refetch} />
                 </div>
                 <p css={s.mood}>"{user.fullName ? `${user.fullName}님의 음악 일기 🎵` : "오늘의 감정을 기록해보세요 ☕"}"</p>
                 <p css={s.email}>로그인 계정: {user.email}</p>
@@ -139,20 +145,28 @@ export default function MyPage() {
               <h2 css={s.sectionTitle}>
                 <Music2 size={22} /> 나의 멜로디
               </h2>
+
               <div css={s.subSection}>
-                <h3 css={s.subTitle}>나의 관심 장르</h3>
+                <div css={s.subHeader}>
+                  <h3 css={s.subTitle}>나의 관심 장르</h3>
+                  <button css={s.editButton} onClick={() => setIsGenreModalOpen(true)}>
+                    <Edit2 size={13} /> 장르 수정
+                  </button>
+                </div>
+
                 <div css={s.tagList}>
-                  {mockGenres.map((genre) => (
+                  {user.genres.map((genre) => (
                     <span key={genre} css={s.tagItem}>
                       # {genre}
                     </span>
                   ))}
                 </div>
               </div>
+
               <div css={s.subSection}>
                 <h3 css={s.subTitle}>내가 만든 플레이리스트</h3>
                 <div css={s.playlistGrid}>
-                  {mockPlaylists.map((playlist) => (
+                  {user.playlists.map((playlist) => (
                     <div key={playlist.id} css={s.playlistItem}>
                       <div css={s.playlistCover}>
                         <span className="emoji">{playlist.emoji}</span>
@@ -162,6 +176,8 @@ export default function MyPage() {
                   ))}
                 </div>
               </div>
+
+              {isGenreModalOpen && <GenreEditModal selectedGenres={user.genres} onClose={() => setIsGenreModalOpen(false)} onSave={handleGenreUpdate} />}
             </section>
           </div>
 

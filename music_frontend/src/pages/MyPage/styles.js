@@ -64,17 +64,19 @@ export const card = css`
 `;
 
 export const sectionTitle = css`
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #5d4037;
   margin-bottom: 25px;
   display: flex;
   align-items: center;
+    // justify-content: space-between;
   gap: 10px;
 `;
 
+
 export const subTitle = css`
-  font-size: 1.15rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #4a3c35;
   margin-bottom: 15px;
@@ -133,14 +135,14 @@ export const editButton = css`
 `;
 
 export const mood = css`
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #7a6e6a;
   font-style: italic;
   margin-bottom: 10px;
 `;
 
 export const email = css`
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #b0a49f;
 `;
 
@@ -231,7 +233,7 @@ export const tagItem = css`
 
 export const playlistGrid = css`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 15px;
 `;
 
@@ -241,7 +243,7 @@ export const playlistItem = css`
   align-items: center;
   gap: 10px;
   span {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: #4a3c35;
     font-weight: 500;
   }
@@ -263,7 +265,7 @@ export const playlistCover = css`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 2.5rem;
+    font-size: 3rem;
   }
 `;
 

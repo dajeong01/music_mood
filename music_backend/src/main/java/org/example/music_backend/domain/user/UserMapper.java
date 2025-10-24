@@ -11,4 +11,5 @@ public interface UserMapper {
     User findById(Integer userId);
     User findByNickname(String nickname);
     List<User> getUserDetail(Integer userId);
+    int updateNickname(Integer userId, String nickname);
 }

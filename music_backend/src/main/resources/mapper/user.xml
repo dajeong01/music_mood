@@ -19,6 +19,12 @@
         VALUES (#{oauthType}, #{providerId}, #{email},#{fullName}, #{nickname})
     </insert>
 
+    <update id="updateNickname">
+        UPDATE user_tb
+        SET nickname = #{nickname}
+        WHERE user_id = #{userId}
+    </update>
+
     <select id="findByEmail" resultMap="UserMap">
         select
             user_id,

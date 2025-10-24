@@ -47,8 +47,10 @@ public class UserService {
         return userMapper.getUserDetail(userId);
     }
 
-
-
-
+    public String updateNickname(String nickname) {
+        Integer userId = principalUtil.getPrincipalUser().getUser().getUserId();
+        int result = userMapper.updateNickname(userId, nickname);
+        return result > 0 ? "success" : "fail";
+    }
 
 }
