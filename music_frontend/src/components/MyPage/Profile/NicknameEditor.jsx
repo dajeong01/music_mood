@@ -15,7 +15,7 @@ export default function NicknameEditor({ nickname: initialNickname, onUpdated })
     if (isEditing && isChecked) {
       // ✅ 수정 완료
       try {
-        await reqUpdateNickname({ nickname });
+        await reqUpdateNickname({nickname});
         toast.success("닉네임이 성공적으로 변경되었어요 🎉", {
           icon: "✨",
           style: {

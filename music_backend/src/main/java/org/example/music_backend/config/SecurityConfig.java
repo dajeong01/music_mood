@@ -49,6 +49,7 @@ public class SecurityConfig {
             auth.requestMatchers("/api/users/**").permitAll();
             auth.requestMatchers("/auth/**").permitAll();
             auth.requestMatchers("/api/weather/**").permitAll();
+            auth.requestMatchers("/api/genres/**").permitAll();
             auth.anyRequest().authenticated();
         });
 

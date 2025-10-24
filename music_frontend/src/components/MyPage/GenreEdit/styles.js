@@ -51,7 +51,7 @@ export const modal = css`
 export const genreGrid = css`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 12px;
+  gap: 15px;
   margin-bottom: 28px;
 `;
 
@@ -61,7 +61,7 @@ export const genreButton = css`
   border: 1px solid transparent;
   border-radius: 14px;
   color: ${brown};
-  font-size: 1rem;
+  font-size: 1.2rem;
   padding: 10px 14px;
   cursor: pointer;
   transition: all 0.2s ease;

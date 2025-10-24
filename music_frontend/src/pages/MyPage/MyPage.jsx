@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useQueryClient } from "@tanstack/react-query";
-import { Bell, LogOut, Music2, PieChart, Settings, Sun, Trash2 } from "lucide-react";
+import { Bell, Edit2, LogOut, Music2, PieChart, Settings, Sun, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LeftSideBarLayout from "../../components/LeftSideBarLayout/LeftSideBarLayout";
@@ -8,6 +8,7 @@ import GenreEditModal from "../../components/MyPage/GenreEdit/GenreEditModal";
 import NicknameEditor from "../../components/MyPage/Profile/NicknameEditor";
 import useUserDetailQuery from "../../queries/User/useUserDetailQuery";
 import * as s from "./styles";
+import { getKoreanGenreName } from "../../constants/GenreKeys";
 
 const mockGenres = ["재즈", "어쿠스틱", "시티팝", "발라드", "OST"];
 
@@ -153,11 +154,10 @@ export default function MyPage() {
                     <Edit2 size={13} /> 장르 수정
                   </button>
                 </div>
-
                 <div css={s.tagList}>
-                  {user.genres.map((genre) => (
-                    <span key={genre} css={s.tagItem}>
-                      # {genre}
+                  {user.genres?.map((genre) => (
+                    <span key={genre.genre_id || genre} css={s.tagItem}>
+                      # {genre.genre_name ? getKoreanGenreName(genre.genre_name) : genre}
                     </span>
                   ))}
                 </div>
@@ -166,14 +166,23 @@ export default function MyPage() {
               <div css={s.subSection}>
                 <h3 css={s.subTitle}>내가 만든 플레이리스트</h3>
                 <div css={s.playlistGrid}>
-                  {user.playlists.map((playlist) => (
-                    <div key={playlist.id} css={s.playlistItem}>
-                      <div css={s.playlistCover}>
-                        <span className="emoji">{playlist.emoji}</span>
+                  {user.playlists?.length > 0 ? (
+                    user.playlists.map((playlist) => (
+                      <div key={playlist.id} css={s.playlistItem}>
+                        <div css={s.playlistCover}>
+                          <span className="emoji">{playlist.emoji}</span>
+                        </div>
+                        <span>{playlist.name}</span>
                       </div>
-                      <span>{playlist.name}</span>
+                    ))
+                  ) : (
+                    <div css={s.emptyPlaylist}>
+                      <p>아직 플레이리스트가 없어요 </p>
+                      <button css={s.addButton} onClick={() => navigate("/playlist")}>
+                        ⨠ 새 플레이리스트 만들기
+                      </button>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
 

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Console;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,7 +29,8 @@ public class UserController {
     }
 
     @PutMapping("/nickname/update")
-    public ResponseEntity<ResponseDto<?>> updateNickname(@RequestBody String nickname) {
+    public ResponseEntity<ResponseDto<?>> updateNickname(@RequestBody Map<String, String> body) {
+        String nickname = body.get("nickname");
         return ResponseEntity.ok(ResponseDto.success(userService.updateNickname(nickname)));
     }
 

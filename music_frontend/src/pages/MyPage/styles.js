@@ -70,10 +70,9 @@ export const sectionTitle = css`
   margin-bottom: 25px;
   display: flex;
   align-items: center;
-    // justify-content: space-between;
+  // justify-content: space-between;
   gap: 10px;
 `;
-
 
 export const subTitle = css`
   font-size: 1.3rem;
@@ -266,6 +265,31 @@ export const playlistCover = css`
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 3rem;
+  }
+`;
+
+export const emptyPlaylist = css`
+  text-align: center;
+  color: #666;
+  margin-top: 5px;
+`;
+
+export const addButton = css`
+  background: #fdfaf7;
+  border: 1px solid #e6e3df;
+  color: #7a6e6a;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover {
+    background: #f6efe9;
+    border-color: #d4b996;
   }
 `;
 
