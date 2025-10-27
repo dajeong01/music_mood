@@ -150,9 +150,9 @@ export const dayCell = ({ inMonth, isToday, isSelected }) => css`
 
 export const emotionIcon = css`
   position: absolute;
-  bottom: 4px;
-  right: 4px;
-  font-size: 1.2rem;
+  bottom: 6px;
+  right: 8px;
+  font-size: 1.5rem;
   filter: grayscale(0.3);
 `;
 

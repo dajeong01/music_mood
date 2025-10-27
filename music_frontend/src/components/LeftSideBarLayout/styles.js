@@ -1,77 +1,68 @@
 import { css } from "@emotion/react";
 
-export const wrapper = css`
+export const sidebar = css`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
   width: 240px;
   height: 100vh;
-  padding: 32px 20px;
-  background-color: #FFFDF9; /* 부드러운 크림색 배경 */
-  border-right: 1px solid #F3EEEA; /* 은은한 구분선 */
-  font-family: "Gamja Flower", "Segoe UI", sans-serif;
-  box-shadow: 1px 0 4px rgba(0, 0, 0, 0.03);
+  background-color: #fffcf8;
+  border-right: 1px solid #f2ede8;
+  box-shadow: 1px 0 4px rgba(0, 0, 0, 0.02);
+  padding: 36px 22px;
+  font-family: "Pretendard", sans-serif;
 `;
 
 export const logoBox = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 56px;
-  width: 100%;
+  margin-bottom: 60px;
   cursor: pointer;
 `;
 
-export const logoImg = css`
-  width: 170px; /* 로고 크기 살짝 조정 */
-  height: auto;
-  object-fit: contain;
+export const logoText = css`
+  font-family: "Gamja Flower", sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #5d4037;
+  user-select: none;
 `;
 
 export const menuList = css`
   display: flex;
   flex-direction: column;
-  gap: 12px; /* 메뉴 간격 조정 */
-  width: 100%;
+  gap: 10px;
 `;
 
-// active 상태에 따라 다른 스타일을 적용하기 위해 함수 형태로 변경합니다.
+export const sidebarSpacer = css`
+  flex-grow: 1;
+`;
+
 export const menuItem = ({ isActive }) => css`
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px 16px;
-  font-size: 17px;
+  gap: 12px;
+  padding: 11px 15px;
+  font-size: 16.5px;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.25s ease;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-
-  /* isActive 상태에 따른 기본 스타일 설정 */
+  color: ${isActive ? "#5D4037" : "#8b8b8b"};
   background-color: ${isActive ? "#FFF5E4" : "transparent"};
-  color: ${isActive ? "#5D4037" : "#6B7280"};
+  font-weight: ${isActive ? "700" : "500"};
 
   svg {
-    stroke-width: 1.5;
-    flex-shrink: 0;
-    color: ${isActive ? "#5D4037" : "#888"};
-    transition: all 0.25s ease;
-  }
-  
-  span {
-    font-weight: ${isActive ? "700" : "500"};
+    color: ${isActive ? "#5D4037" : "#a8a8a8"};
+    stroke-width: 1.7;
+    transition: color 0.2s ease;
   }
 
-  /* 활성화되지 않은 메뉴 아이템에만 hover 효과 적용 */
-  ${!isActive &&
-  `&:hover {
-    background: #FFF9F0; /* 더 연한 크림색으로 호버 효과 */
-    color: #5D4037; /* 호버 시 텍스트 색상 변경 */
-
+  &:hover {
+    background-color: #fff9f2;
+    color: #5d4037;
     svg {
-      color: #5D4037;
+      color: #5d4037;
     }
-  }`}
+  }
 `;

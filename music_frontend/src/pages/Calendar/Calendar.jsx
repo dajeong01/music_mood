@@ -1,158 +1,119 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from "react";
-import {
-  CalendarDays,
-  ChevronLeft,
-  ChevronRight,
-  CloudSun,
-  Edit3,
-  ListMusic,
-  Music,
-  User,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Edit3, Music } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { reqGetMonthlyDiaries, reqSaveDiary } from "../../api/CalendarApi";
+import LeftSideBarLayout from "../../components/LeftSideBarLayout/LeftSideBarLayout";
+import DiaryModal from "./Modal/DiaryModal";
 import * as s from "./styles";
 
-/**
- * 사이드바 레이아웃 컴포넌트
- */
-function LeftSideBarLayout() {
-  const currentPath = "/calendar"; // 임시 활성화 상태
+export default function Calendar() {
+  // 🔹 상태 관리
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalDate, setModalDate] = useState(null);
+  const [diaryData, setDiaryData] = useState([]);
+  const [todayDiary, setTodayDiary] = useState(null);
+  const today = new Date().getDate();
 
-  const navigate = (path) => {
-    console.log(`Navigating to ${path}`);
+  // 월 정보 (지금은 2025-10 기준, 실제로는 new Date() 기반으로 가능)
+  const currentMonth = "2025-10";
+
+  const fetchDiaries = async () => {
+    try {
+      const res = await reqGetMonthlyDiaries(currentMonth);
+      const diaries = Array.isArray(res?.data?.body) ? res.data.body : [];
+      console.log(diaries);
+      setDiaryData(diaries);
+      console.log("📘 다이어리 데이터:", diaries);
+    } catch (err) {
+      console.error("❌ 일기 조회 실패:", err);
+      setDiaryData([]);
+    }
   };
 
-  const menuItems = [
-    { icon: <CloudSun size={20} />, label: "오늘의 날씨", path: "/weather" },
-    { icon: <CalendarDays size={20} />, label: "감정 캘린더", path: "/calendar" },
-    { icon: <ListMusic size={20} />, label: "플레이리스트", path: "/playlist" },
-  ];
-
-  const mypageMenu = {
-    icon: <User size={20} />,
-    label: "마이페이지",
-    path: "/mypage",
-  };
-
-  return (
-    <aside css={s.sidebar}>
-      <div css={s.logoBox} onClick={() => navigate("/")}>
-        <h1
-          style={{
-            fontFamily: "'Gamja Flower', sans-serif",
-            fontSize: "2rem",
-            color: "#5d4037",
-            fontWeight: "700",
-          }}
-        >
-          Melody Diary
-        </h1>
-      </div>
-      <nav css={s.menuList}>
-        {menuItems.map((item) => (
-          <div
-            key={item.label}
-            css={s.menuItem({ isActive: currentPath === item.path })}
-            onClick={() => navigate(item.path)}
-          >
-            {item.icon}
-            <span>{item.label}</span>
-          </div>
-        ))}
-      </nav>
-      <div css={s.sidebarSpacer}></div>
-      <div css={s.menuList}>
-        <div
-          css={s.menuItem({ isActive: currentPath === mypageMenu.path })}
-          onClick={() => navigate(mypageMenu.path)}
-        >
-          {mypageMenu.icon}
-          <span>{mypageMenu.label}</span>
-        </div>
-      </div>
-    </aside>
-  );
-}
-
-/**
- * 메인 감정 캘린더 페이지
- */
-export default function EmotionCalendar() {
-  const [selectedDay, setSelectedDay] = useState(14);
-  const [diaryExists, setDiaryExists] = useState(true);
-
-  const calendarData = {
-    days: [
-      { day: 28, inMonth: false },
-      { day: 29, inMonth: false },
-      { day: 30, inMonth: false },
-      { day: 1, inMonth: true, emotion: "😄" },
-      { day: 2, inMonth: true },
-      { day: 3, inMonth: true, emotion: "😢" },
-      { day: 4, inMonth: true },
-      { day: 5, inMonth: true },
-      { day: 6, inMonth: true, emotion: "😄" },
-      { day: 7, inMonth: true },
-      { day: 8, inMonth: true },
-      { day: 9, inMonth: true, emotion: "🤔" },
-      { day: 10, inMonth: true },
-      { day: 11, inMonth: true },
-      { day: 12, inMonth: true, emotion: "😍" },
-      { day: 13, inMonth: true },
-      { day: 14, inMonth: true, emotion: "😠", isToday: true },
-      { day: 15, inMonth: true },
-      { day: 16, inMonth: true },
-      { day: 17, inMonth: true, emotion: "😄" },
-      { day: 18, inMonth: true },
-      { day: 19, inMonth: true },
-      { day: 20, inMonth: true },
-      { day: 21, inMonth: true, emotion: "😄" },
-      { day: 22, inMonth: true },
-      { day: 23, inMonth: true },
-      { day: 24, inMonth: true },
-      { day: 25, inMonth: true, emotion: "😢" },
-      { day: 26, inMonth: true },
-      { day: 27, inMonth: true },
-      { day: 28, inMonth: true },
-      { day: 29, inMonth: true },
-      { day: 30, inMonth: true },
-      { day: 31, inMonth: true, emotion: "🥳" },
-      { day: 1, inMonth: false },
-    ],
-    stats: {
-      total: 9,
-      happy: 50,
-      sad: 20,
-      angry: 15,
-      other: 15,
-      mainEmotion: "😄",
-    },
-  };
-
-  const todayDiary = {
-    weather: "흐림",
-    emotion: "😠",
-    playlist: Array.from({ length: 10 }).map((_, i) => ({
-      art: `https://placehold.co/48x48/F8E9D7/5D4037?text=MD`,
-      title: `추천곡 ${i + 1}`,
-      artist: `아티스트 ${i + 1}`,
-      time: `3:${20 + i}`,
-    })),
-  };
+  useEffect(() => {
+    fetchDiaries();
+  }, []);
 
   const handleDayClick = (day) => {
     if (!day.inMonth) return;
     setSelectedDay(day.day);
-    setDiaryExists(day.day === 14);
+    setModalDate(day.day);
+    setOpenModal(true);
+  };
+
+  // 🔹 “일기 쓰러 가기” 버튼 클릭
+  const handleWriteDiaryClick = () => {
+    setModalDate(today);
+    setOpenModal(true);
+  };
+
+  // 🔹 감정 저장 후 DB에 반영
+  const handleSaveDiary = async (data) => {
+    try {
+      await reqSaveDiary({
+        date: `${currentMonth}-${String(modalDate).padStart(2, "0")}`,
+        emotion: data.emotion,
+        content: data.content,
+      });
+      setOpenModal(false);
+      fetchDiaries(); // 새로고침 없이 갱신
+    } catch (err) {
+      console.error("❌ 일기 저장 실패:", err);
+    }
+  };
+
+  // 🔹 달력 데이터 생성
+  const calendarDays = Array.from({ length: 35 }).map((_, i) => {
+    const dayNum = i - 2;
+    const inMonth = dayNum > 0 && dayNum <= 31;
+    const diary = diaryData.find((d) => {
+      if (!d?.date) return false;
+      return new Date(d.date).getDate() === dayNum;
+    });
+    const emotion = diary?.emotion;
+    const isToday = dayNum === today;
+    return { day: inMonth ? dayNum : "", inMonth, emotion, isToday };
+  });
+
+  // 🔹 통계 계산 (감정 비율, 대표 감정)
+  const emotionStats = (diaryData || []).reduce(
+    (acc, cur) => {
+      if (!cur.emotion) return acc;
+      acc[cur.emotion] = (acc[cur.emotion] || 0) + 1;
+      acc.total++;
+      return acc;
+    },
+    { total: 0 }
+  );
+
+  const calcPercent = (count) => (emotionStats.total ? Math.round((count / emotionStats.total) * 100) : 0);
+
+  const mainEmotion =
+    Object.keys(emotionStats)
+      .filter((e) => e !== "total")
+      .reduce((max, curr) => (emotionStats[curr] > (emotionStats[max] || 0) ? curr : max), "happy") || "happy";
+
+  // 🔹 오늘 일기 존재 여부 (오른쪽 패널)
+  const diaryExists = diaryData.some((d) => new Date(d.date).getDate() === today);
+
+  const emotionIconMap = {
+    happy: "😄",
+    sad: "😢",
+    angry: "😠",
+    tired: "🥱",
+    excited: "🥰",
+    other: "😐",
   };
 
   return (
     <div css={s.pageWrapper}>
       <LeftSideBarLayout />
+
       <main css={s.mainContent}>
-        {/* 왼쪽: 달력 + 통계 */}
         <div css={s.leftColumn}>
-          {/* 캘린더 */}
+          {/* 🔸 달력 */}
           <div css={s.card}>
             <div css={s.calendarHeader}>
               <button css={s.navButton}>
@@ -166,19 +127,12 @@ export default function EmotionCalendar() {
 
             <div css={s.calendarGrid}>
               {["일", "월", "화", "수", "목", "금", "토"].map((d, i) => (
-                <div
-                  key={d}
-                  css={[
-                    s.dayHeader,
-                    i === 0 && s.dayHeaderSun,
-                    i === 6 && s.dayHeaderSat,
-                  ]}
-                >
+                <div key={d} css={[s.dayHeader, i === 0 && s.dayHeaderSun, i === 6 && s.dayHeaderSat]}>
                   {d}
                 </div>
               ))}
 
-              {calendarData.days.map((day, idx) => (
+              {calendarDays.map((day, idx) => (
                 <div
                   key={idx}
                   css={s.dayCell({
@@ -188,21 +142,25 @@ export default function EmotionCalendar() {
                   })}
                   onClick={() => handleDayClick(day)}
                 >
-                  <span>{day.day}</span>
-                  {day.emotion && <span css={s.emotionIcon}>{day.emotion}</span>}
+                  {day.inMonth && (
+                    <>
+                      <span>{day.day}</span>
+                      {day.emotion && <span css={s.emotionIcon}>{emotionIconMap[day.emotion] || "🙂"}</span>}
+                    </>
+                  )}
                 </div>
               ))}
             </div>
           </div>
 
-          {/* 통계 */}
+          {/* 🔸 감정 통계 */}
           <div css={s.statsRow}>
             <div css={[s.card, s.statCard]}>
               <h3 css={s.chartTitle}>10월의 감정 조각들</h3>
               <div css={s.donutChartWrapper}>
-                <div css={s.donutChart(calendarData.stats)}></div>
+                <div css={s.donutChart(emotionStats)}></div>
                 <div css={s.donutCenter}>
-                  <span>{calendarData.stats.total}일</span>
+                  <span>{emotionStats.total}일</span>
                 </div>
               </div>
               <div css={s.legend}>
@@ -211,31 +169,41 @@ export default function EmotionCalendar() {
                     <div>
                       <span css={s.legendColor(t)}></span>
                       {t === "happy"
-                        ? "행복"
+                        ? "행복 😄"
                         : t === "sad"
-                        ? "슬픔"
+                        ? "슬픔 😢"
                         : t === "angry"
-                        ? "화남"
-                        : "기타"}
+                        ? "화남 😠"
+                        : t === "tired"
+                        ? "피곤 🥱"
+                        : t === "excited"
+                        ? "설렘 🥰"
+                        : "기타 😐"}
                     </div>
-                    <span>{calendarData.stats[t]}%</span>
+                    <span>{calcPercent(emotionStats[t] || 0)}%</span>
                   </div>
                 ))}
               </div>
             </div>
 
+            {/* 🔸 대표 감정 */}
             <div css={[s.card, s.statCard, s.monthlyEmotionCard]}>
               <h3 css={s.chartTitle}>이달의 대표 감정</h3>
-              <p css={s.monthlyEmotionIcon}>{calendarData.stats.mainEmotion}</p>
+              <p css={s.monthlyEmotionIcon}>
+                {mainEmotion === "happy" ? "😄" : mainEmotion === "sad" ? "😢" : mainEmotion === "angry" ? "😠" : mainEmotion === "excited" ? "🥰" : "😐"}
+              </p>
               <p css={s.monthlyEmotionText}>
-                이번 달은 <span css={s.highlight("happy")}>'행복'</span>한 날이 많았네요!{" "}
-                앞으로도 즐거운 날들이 가득하기를 ☀️
+                이번 달은{" "}
+                <span css={s.highlight(mainEmotion)}>
+                  {mainEmotion === "happy" ? "'행복'" : mainEmotion === "sad" ? "'슬픔'" : mainEmotion === "angry" ? "'화남'" : "'기타'"}
+                </span>{" "}
+                한 날이 많았네요 ☀️
               </p>
             </div>
           </div>
         </div>
 
-        {/* 오른쪽: 플레이리스트 */}
+        {/* 🎵 오른쪽 - 오늘의 플레이리스트 */}
         <div css={s.rightColumn}>
           {diaryExists ? (
             <div css={[s.card, s.playlistCard]}>
@@ -243,19 +211,19 @@ export default function EmotionCalendar() {
                 오늘을 위한 멜로디 <Music size={20} />
               </h3>
               <p css={s.playlistSubheader}>
-                날씨(<span css={s.highlight("sad")}>{todayDiary.weather}</span>) + 감정(
-                <span css={s.highlight("angry")}>{todayDiary.emotion}</span>)을 위한 추천
+                날씨(<span css={s.highlight("sad")}>흐림</span>) + 감정(
+                <span css={s.highlight(mainEmotion)}>😄</span>)을 위한 추천
               </p>
               <div css={s.playlistScroll}>
                 <div css={s.playlist}>
-                  {todayDiary.playlist.map((song, index) => (
-                    <div key={index} css={s.playlistItem}>
-                      <img src={song.art} css={s.albumArt} alt="Album Art" />
+                  {[...Array(10)].map((_, i) => (
+                    <div key={i} css={s.playlistItem}>
+                      <img src={`https://placehold.co/48x48/F8E9D7/5D4037?text=MD`} css={s.albumArt} alt="Album Art" />
                       <div css={s.songInfo}>
-                        <p css={s.songTitle}>{song.title}</p>
-                        <p css={s.songArtist}>{song.artist}</p>
+                        <p css={s.songTitle}>추천곡 {i + 1}</p>
+                        <p css={s.songArtist}>아티스트 {i + 1}</p>
                       </div>
-                      <span css={s.songTime}>{song.time}</span>
+                      <span css={s.songTime}>3:{20 + i}</span>
                     </div>
                   ))}
                 </div>
@@ -268,13 +236,16 @@ export default function EmotionCalendar() {
               <p css={s.emptyText}>
                 오늘의 날씨와 감정을 기록하고 <br /> 나만의 맞춤 멜로디를 추천받아보세요!
               </p>
-              <button css={s.emptyButton}>
+              <button css={s.emptyButton} onClick={handleWriteDiaryClick}>
                 <Edit3 size={16} /> 일기 쓰러 가기
               </button>
             </div>
           )}
         </div>
       </main>
+
+      {/* ✨ 모달 */}
+      <DiaryModal isOpen={openModal} onClose={() => setOpenModal(false)} onSave={handleSaveDiary} />
     </div>
   );
 }

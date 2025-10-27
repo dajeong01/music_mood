@@ -50,6 +50,7 @@ public class SecurityConfig {
             auth.requestMatchers("/auth/**").permitAll();
             auth.requestMatchers("/api/weather/**").permitAll();
             auth.requestMatchers("/api/genres/**").permitAll();
+            auth.requestMatchers("/api/calendar/**").permitAll();
             auth.anyRequest().authenticated();
         });
 

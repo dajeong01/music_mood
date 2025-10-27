@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.music_backend.domain.diary.DiaryMapper">
+
+    <insert id="insertDiary" parameterType="org.example.music_backend.domain.diary.Diary">
+        INSERT INTO diaries_tb (user_id, date, emotion, content)
+        VALUES (#{userId}, #{date}, #{emotion}, #{content});
+    </insert>
+
+    <update id="updateDiary" parameterType="org.example.music_backend.domain.diary.Diary">
+        UPDATE diaries_tb
+        SET emotion = #{emotion},
+        content = #{content}
+        WHERE user_id = #{userId} AND date = #{date};
+    </update>
+
+    <select id="findDiaryByUserAndDate" resultType="org.example.music_backend.domain.diary.Diary" parameterType="map">
+        SELECT diary_id AS diaryId,
+        user_id AS userId,
+        date,
+        emotion,
+        content,
+        created_at AS createdAt
+        FROM diaries_tb
+        WHERE user_id = #{userId} AND date = #{date};
+    </select>
+
+    <select id="findMonthlyDiaries"
+            resultType="org.example.music_backend.domain.diary.Diary"
+            parameterType="map">
+
+        SELECT
+        diary_id AS diaryId,
+        user_id AS userId,
+        date,
+        emotion,
+        content,
+        created_at AS createdAt
+        FROM diaries_tb
+        WHERE user_id = #{userId}
+        AND DATE_FORMAT(date, '%Y-%m-%d')
+        BETWEEN #{startDate} AND #{endDate}
+        ORDER BY date ASC;
+    </select>
+
+</mapper>
