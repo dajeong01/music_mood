@@ -9,6 +9,7 @@ import NicknameEditor from "../../components/MyPage/Profile/NicknameEditor";
 import useUserDetailQuery from "../../queries/User/useUserDetailQuery";
 import * as s from "./styles";
 import { getKoreanGenreName } from "../../constants/GenreKeys";
+import useUserGenreQuery from "../../queries/Spotify/useUserGenreQuery";
 
 const mockGenres = ["재즈", "어쿠스틱", "시티팝", "발라드", "OST"];
 
@@ -96,27 +97,26 @@ export default function MyPage() {
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError, refetch } = useUserDetailQuery();
-  // console.log(data?.data?.body);
   const user = data?.data?.body[0];
-  console.log(user);
 
   const [isGenreModalOpen, setIsGenreModalOpen] = useState(false);
 
+  // ✅ 추가: 유저 장르 불러오기
+  const { data: genres, isLoading: genreLoading, isError: genreError } = useUserGenreQuery();
+
   const handleGenreUpdate = (newGenres) => {
-    // TODO: 서버 갱신 후 상태 업데이트
     console.log("✅ 업데이트된 장르:", newGenres);
   };
 
   const handleLogout = () => {
     console.log("로그아웃 시도");
   };
-
   const handleDeactivate = () => {
     console.log("회원 탈퇴 시도");
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
-  if (isError) return <div>유저 정보를 불러오지 못했습니다.</div>;
+  if (isLoading || genreLoading) return <div>로딩 중...</div>;
+  if (isError || genreError) return <div>유저 정보를 불러오지 못했습니다.</div>;
 
   return (
     <div css={s.pageWrapper}>
@@ -142,6 +142,7 @@ export default function MyPage() {
               </div>
             </section>
 
+            {/* 🎧 나의 멜로디 */}
             <section css={s.card}>
               <h2 css={s.sectionTitle}>
                 <Music2 size={22} /> 나의 멜로디
@@ -154,12 +155,18 @@ export default function MyPage() {
                     <Edit2 size={13} /> 장르 수정
                   </button>
                 </div>
+
+                {/* 🎵 장르 태그 */}
                 <div css={s.tagList}>
-                  {user.genres?.map((genre) => (
-                    <span key={genre.genre_id || genre} css={s.tagItem}>
-                      # {genre.genre_name ? getKoreanGenreName(genre.genre_name) : genre}
-                    </span>
-                  ))}
+                  {genres?.length > 0 ? (
+                    genres.map((genre) => (
+                      <span key={genre.genreId} css={s.tagItem}>
+                        # {getKoreanGenreName(genre.genreName)}
+                      </span>
+                    ))
+                  ) : (
+                    <p>선택된 장르가 없습니다 🎧</p>
+                  )}
                 </div>
               </div>
 

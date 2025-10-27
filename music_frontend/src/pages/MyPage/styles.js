@@ -127,6 +127,7 @@ export const editButton = css`
   align-items: center;
   gap: 6px;
   transition: all 0.2s ease;
+  margin-bottom: 1.5rem;
   &:hover {
     background: #f6efe9;
     border-color: #d4b996;

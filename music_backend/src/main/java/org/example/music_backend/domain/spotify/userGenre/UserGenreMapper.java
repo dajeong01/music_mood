@@ -1,6 +1,7 @@
 package org.example.music_backend.domain.spotify.userGenre;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.example.music_backend.domain.spotify.genre.Genre;
 
 import java.util.List;
 

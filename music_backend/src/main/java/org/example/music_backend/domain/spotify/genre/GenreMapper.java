@@ -9,4 +9,5 @@ import java.util.Map;
 public interface GenreMapper {
 
     List<Map<String, Object>> getAllGenres();
+    List<Genre> getGenreNames(List<Integer> genreIds);
 }
