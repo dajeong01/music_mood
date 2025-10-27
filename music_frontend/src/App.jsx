@@ -7,6 +7,7 @@ import Home from "./pages/home/Home";
 import Weather from "./pages/Weather/Weather";
 import MyPage from "./pages/MyPage/MyPage";
 import { Toaster } from "react-hot-toast";
+import Calendar from "./pages/Calendar/Calendar";
 
 function App() {
   ReactModal.setAppElement("#root");
@@ -19,6 +20,7 @@ function App() {
         <Route path="/oauth/signup" element={<Signup />} />
         <Route path="/weather" element={<Weather />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/calendar" element={<Calendar />} />
       </Routes>
       <Toaster position="top-center" reverseOrder={false} />
 
