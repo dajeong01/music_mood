@@ -20,5 +20,5 @@ export const reqGetCombinedPlaylists = async (weatherKey, emotionKey) => {
 
 // ✅ 감정 기반 트랙 (30초 미리듣기)
 export const reqGetEmotionTracks = async (emotionKey) => {
-  return api.get(`/api/spotify/tracks/${emotionKey}`);
+  return api.get(`/api/spotify/emotion/${emotionKey}`);
 };

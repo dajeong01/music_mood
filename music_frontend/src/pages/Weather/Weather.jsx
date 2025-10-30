@@ -80,7 +80,10 @@ export default function Weather() {
 
   // ✅ 감정 기반 트랙 (임시 감정: happy)
   const emotionKey = "happy";
-  const { data: emotionTracks = [], isLoading: emotionLoading } = useEmotionTracks(emotionKey);
+  const { data: emotionData, isLoading: emotionLoading } = useEmotionTracks(emotionKey);
+  const emotionTracks = Array.isArray(emotionData)
+  ? emotionData
+  : emotionData?.body || [];
 
   // ✅ 30초 미리듣기 재생
   const handlePlayPreview = (previewUrl) => {

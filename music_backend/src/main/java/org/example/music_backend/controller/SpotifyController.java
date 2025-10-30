@@ -33,23 +33,22 @@ public class SpotifyController {
     }
 
 
-    // 감정만 기반
+    // ✅ 감정 기반 추천 (리팩토링된 메서드명 반영)
     @GetMapping("/emotion/{emotionKey}")
-    public List<Map<String, Object>> getEmotion(@PathVariable String emotionKey) {
-        return spotifyService.getEmotionPlaylists(emotionKey);
+    public ResponseEntity<ResponseDto<List<Map<String, Object>>>> getEmotionTracks(
+            @PathVariable String emotionKey
+    ) {
+        List<Map<String, Object>> tracks = spotifyService.getEmotionTracks(emotionKey);
+        return ResponseEntity.ok(new ResponseDto<>(200, "감정 기반 트랙 추천 성공", tracks));
     }
 
-    // 날씨 + 감정 조합
+    // ✅ 날씨 + 감정 조합 추천 (리팩토링된 메서드명 반영)
     @GetMapping("/mix")
-    public List<Map<String, Object>> getCombined(
+    public ResponseEntity<ResponseDto<List<Map<String, Object>>>> getCombinedTracks(
             @RequestParam String weather,
             @RequestParam String emotion
     ) {
-        return spotifyService.getCombinedPlaylists(weather, emotion);
-    }
-
-    @GetMapping("/tracks/{emotionKey}")
-    public ResponseEntity<?> getEmotionTracks(@PathVariable String emotionKey) {
-        return ResponseEntity.ok(spotifyService.getEmotionTracks(emotionKey));
+        List<Map<String, Object>> tracks = spotifyService.getCombinedTracks(weather, emotion);
+        return ResponseEntity.ok(new ResponseDto<>(200, "날씨 + 감정 조합 추천 성공", tracks));
     }
 }
