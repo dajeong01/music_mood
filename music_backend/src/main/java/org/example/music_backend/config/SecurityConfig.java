@@ -51,6 +51,7 @@ public class SecurityConfig {
             auth.requestMatchers("/api/weather/**").permitAll();
             auth.requestMatchers("/api/genres/**").permitAll();
             auth.requestMatchers("/api/calendar/**").permitAll();
+            auth.requestMatchers("/api/spotify/**").permitAll();
             auth.anyRequest().authenticated();
         });
 

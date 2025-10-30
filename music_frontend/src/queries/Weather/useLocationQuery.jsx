@@ -19,7 +19,7 @@ export default function useLocationQuery(city = "부산광역시", district = "�
     queryKey: ["weatherCoords", city, district],
     queryFn: async () => {
       const res = await reqGetWeatherCoords(city, district);
-      console.log("🌍 [1] 좌표 API 응답:", res);
+      // console.log("🌍 [1] 좌표 API 응답:", res);
       return res?.body || res || null;
     },
     enabled: !!(city && district && city !== "도시 선택" && district !== "구 선택" && district.trim() !== ""), // ✅ 구가 선택되지 않으면 실행 X

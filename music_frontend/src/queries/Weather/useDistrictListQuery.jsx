@@ -8,7 +8,7 @@ export default function useDistrictListQuery(city) {
     queryKey: ["districtList", city],
     queryFn: async () => {
       const res = await reqGetDistrictList(city);
-      console.log("🏙️ [구 리스트 응답]", res);
+      // console.log("🏙️ [구 리스트 응답]", res);
       return res;
     },
     enabled: !!(city && city !== "도시 선택"), 

@@ -39,7 +39,7 @@ export const fetchCurrentWeather = async (lat, lon) => {
   }
 
   try {
-    console.log("🌍 [4] OpenWeather API 요청 시작...");
+    // console.log("🌍 [4] OpenWeather API 요청 시작...");
     const res = await axios.get("https://api.openweathermap.org/data/2.5/weather", {
       params: {
         lat,

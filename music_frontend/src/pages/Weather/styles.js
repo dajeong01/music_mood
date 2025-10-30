@@ -146,23 +146,38 @@ export const cardStyle = css`
 `;
 
 export const playlistBox = css`
-  /* 전체 박스 */
-  padding: 10px 0;
+  background: #fffdf9;
+  border-radius: 25px;
+  padding: 24px 28px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+  margin-bottom: 3rem;
+  width: 100%;
+  overflow-x: hidden; /* ✅ 자신 내부만 스크롤 가능하게 */
 `;
 
 export const playlistHeader = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
 
   h2 {
-    font-size: 20px;
+    font-size: 1.35rem;
     font-weight: 700;
-    color: #5d4037;
-    margin: 0;
+    color: #4a3c35;
+  }
+
+  span {
+    font-size: 0.9rem;
+    color: #8d817b;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    &:hover {
+      color: #4a3c35;
+    }
   }
 `;
+
 
 export const genres = css`
   font-size: 14px;
@@ -238,52 +253,101 @@ export const placeholderImg = css`
 export const moodBox = css`
   background: #fffdf9;
   border-radius: 25px;
-  padding: 30px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  margin-top: 3rem;
-
-  h3 {
-    font-weight: 700;
-    font-size: 1.3rem; /* 제목 글자 크기 증가 */
-    color: #5d4037;
-    margin-bottom: 25px;
-  }
+  padding: 24px 28px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  overflow-x: hidden; /* ✅ 자신만 스크롤 */
 `;
 
 export const moodList = css`
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 24px; /* 카드 간격 조금 더 넓게 */
+  padding: 14px 6px 18px 6px;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    height: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #e2d2b9;
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #fdf8f1;
+  }
 `;
 
-export const moodItem = (props) => css`
-  flex: 1 1 calc(33.333% - 20px);
-  min-width: 140px;
-  height: 100px;
-  background-color: ${props.color || "#fdf7e6"};
-  border-radius: 18px;
+
+/* ✅ 카드 디자인 개선 */
+export const moodItem = css`
+  flex: 0 0 200px; /* ✅ 카드 크기 */
+  background: #fffaf3;
+  border-radius: 22px;
+  padding: 22px 14px;
+  text-align: center;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease; /* ✅ 부드러운 애니메이션 */
+  transform-origin: center center;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  color: #4a3c35;
-  font-weight: 600;
-  font-size: 1.2rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  justify-content: space-between;
 
+  /* ✅ Hover 시 확대 + 그림자 강조 */
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transform: scale(1.07) translateY(-6px);
+    box-shadow: 0 12px 26px rgba(255, 200, 130, 0.25), 0 6px 18px rgba(0, 0, 0, 0.1);
+    background: #fff9ef;
   }
 
-  p {
-    margin-top: 5px;
-    font-size: 1rem; /* 설명 글자 크기 증가 */
-    color: #7a6e6a;
+  img {
+    width: 95px; /* ✅ 조금 더 큼 */
+    height: 95px;
+    border-radius: 14px;
+    object-fit: cover;
+    margin: 0 auto 10px;
+    transition: transform 0.3s ease;
+  }
+
+  /* ✅ 이미지도 살짝 커지게 */
+  &:hover img {
+    transform: scale(1.05);
+  }
+
+  .title {
+    font-weight: 700;
+    font-size: 1.1rem; /* ✅ 크고 선명하게 */
+    color: #3b2f2a;
+    margin-bottom: 6px;
+  }
+
+  .artist {
+    font-size: 0.95rem;
+    color: #7a6d65;
     font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  button {
+    margin-top: 8px;
+    background: #f9fafb;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #ffe1b8;
+      transform: scale(1.05);
+    }
   }
 `;
+
 
 export const loading = css`
   display: grid;
@@ -291,4 +355,41 @@ export const loading = css`
   height: 60vh;
   color: #6b7280;
   font-size: 15px;
+`;
+
+export const playButton = css`
+  background: #fffaf2;
+  border: 1px solid #e0d7c8;
+  border-radius: 10px;
+  padding: 5px 10px;
+  font-size: 13px;
+  color: #6b4c3a;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+
+  &:hover:not(:disabled) {
+    background: #ffe4b3;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background: #f3f0eb;
+    color: #aaa;
+    cursor: default;
+  }
+`;
+
+export const albumArt = css`
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+`;
+
+export const albumArtSmall = css`
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 6px;
 `;
