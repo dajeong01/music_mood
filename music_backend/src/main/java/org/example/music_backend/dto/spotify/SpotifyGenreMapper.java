@@ -45,9 +45,6 @@ public class SpotifyGenreMapper {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 🧪 간단 테스트
-     */
     public static void main(String[] args) {
         List<String> input = List.of("ballad", "sad", "hip-hop", "k-pop", "study");
         List<String> mapped = mapToSpotifyGenres(input);
