@@ -56,7 +56,7 @@ const hourlyCard = (bgColor) => css`
     0 2px 4px rgba(0, 0, 0, 0.04),
     0 4px 10px rgba(0, 0, 0, 0.06); /* 💡 더 깊은 입체감 */
   text-align: center;
-  padding: 14px 8px;
+  padding: 10px 8px;
   transition: all 0.25s ease;
   background-clip: padding-box;
 

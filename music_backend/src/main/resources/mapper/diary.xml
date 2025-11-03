@@ -45,4 +45,17 @@
         ORDER BY date ASC;
     </select>
 
+    <select id="findDiaryByUserIdAndDate" resultType="org.example.music_backend.domain.diary.Diary">
+        SELECT
+            diary_id AS diaryId,
+            user_id AS userId,
+            date,
+            emotion,
+            content,
+            created_at AS createdAt
+        FROM diary_tb
+        WHERE user_id = #{userId}
+            AND DATE(date) = #{date}
+    </select>
+
 </mapper>

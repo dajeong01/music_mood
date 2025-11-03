@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { reqGetGenresFromDb } from "../../../api/Spotify/GenreApi";
 import { reqUpdateUserGenres } from "../../../api/Spotify/UserGenreApi";
 import { getKoreanGenreName } from "../../../constants/GenreKeys";
+import { useQueryClient } from "@tanstack/react-query";
+
 import * as s from "./styles";
 
 export default function GenreEditModal({ onClose, selectedGenres = [], onSave }) {
   const [genres, setGenres] = useState([]);
   const [selected, setSelected] = useState(selectedGenres);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     (async () => {
@@ -23,16 +26,15 @@ export default function GenreEditModal({ onClose, selectedGenres = [], onSave })
   }, []);
 
   const handleToggle = (genreId) => {
-    setSelected((prev) =>
-      prev.includes(genreId)
-        ? prev.filter((g) => g !== genreId)
-        : [...prev, genreId]
-    );
+    setSelected((prev) => (prev.includes(genreId) ? prev.filter((g) => g !== genreId) : [...prev, genreId]));
   };
 
   const handleSave = async () => {
-    await reqUpdateUserGenres(selected); // [1, 4, 7] 이런 ID 배열 전달
+    await reqUpdateUserGenres(selected);
     onSave(selected);
+    queryClient.invalidateQueries(["userGenres"]); // 마이페이지 관심 장르 즉시 업데이트
+    queryClient.invalidateQueries(["weatherRecommendations"]); // 날씨 기반 음악 새로고침
+    queryClient.invalidateQueries(["emotionRecommendations"]); // 감정 기반 음악 새로고침
     onClose();
   };
 
@@ -43,15 +45,8 @@ export default function GenreEditModal({ onClose, selectedGenres = [], onSave })
         <div css={s.genreGrid}>
           {genres.length > 0 ? (
             genres.map((genre) => (
-              <button
-                key={genre.genre_id}
-                css={[
-                  s.genreButton,
-                  selected.includes(genre.genre_id) && s.selected,
-                ]}
-                onClick={() => handleToggle(genre.genre_id)}
-              >
-                {getKoreanGenreName(genre.genre_name)}
+              <button key={genre.genreId} css={[s.genreButton, selected.includes(genre.genreId) && s.selected]} onClick={() => handleToggle(genre.genreId)}>
+                {getKoreanGenreName(genre.genreName)}
               </button>
             ))
           ) : (

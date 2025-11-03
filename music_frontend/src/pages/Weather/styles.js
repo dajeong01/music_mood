@@ -159,10 +159,10 @@ export const playlistHeader = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 
   h2 {
-    font-size: 1.35rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #4a3c35;
   }
@@ -282,10 +282,10 @@ export const moodList = css`
 
 /* ✅ 카드 디자인 개선 */
 export const moodItem = css`
-  flex: 0 0 200px; /* ✅ 카드 크기 */
+  flex: 0 0 150px; /* ✅ 카드 크기 */
   background: #fffaf3;
   border-radius: 22px;
-  padding: 22px 14px;
+  padding: 32px 14px;
   text-align: center;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
   transition: all 0.3s ease; /* ✅ 부드러운 애니메이션 */

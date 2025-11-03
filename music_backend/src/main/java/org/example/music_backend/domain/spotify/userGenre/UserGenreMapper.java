@@ -11,5 +11,5 @@ public interface UserGenreMapper {
 
     void insertUserGenre(Integer userId, Integer genreId);
 
-    List<Integer> getUserGenres(Integer userId);
+    List<Integer> findGenreIdsByUserId(int userId);
 }

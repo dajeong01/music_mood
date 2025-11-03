@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Service
 @RequiredArgsConstructor
 public class UserGenreService {
@@ -22,6 +23,7 @@ public class UserGenreService {
     @Transactional
     public void updateUserGenres(List<Integer> genreIds) {
         Integer userId = principalUtil.getPrincipalUser().getUser().getUserId();
+
         userGenreMapper.deleteUserGenres(userId);
         for (Integer genreId : genreIds) {
             userGenreMapper.insertUserGenre(userId, genreId);
@@ -30,10 +32,12 @@ public class UserGenreService {
 
     public List<Genre> getUserGenres() {
         Integer userId = principalUtil.getPrincipalUser().getUser().getUserId();
-        List<Integer> genreIds = userGenreMapper.getUserGenres(userId);
+        List<Integer> genreIds = userGenreMapper.findGenreIdsByUserId(userId);
+
         if (genreIds == null || genreIds.isEmpty()) {
             return new ArrayList<>();
         }
-        return genreMapper.getGenreNames(genreIds);
+
+        return genreMapper.findGenreNamesByIds(genreIds);
     }
 }

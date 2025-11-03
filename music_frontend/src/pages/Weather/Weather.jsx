@@ -9,9 +9,13 @@ import useLocationQuery from "../../queries/Weather/useLocationQuery";
 import { getWeatherLabel } from "../../utils/weatherUtils";
 import * as s from "./styles";
 
-// ✅ Spotify 관련
+// ✅ API / Query
 import { reqGetUserGenres } from "../../api/Spotify/UserGenreApi";
-import { useEmotionTracks, useWeatherTracks } from "../../queries/Spotify/useSpotifyQueries";
+import {
+  useEmotionRecommendations,
+  useWeatherRecommendations,
+} from "../../queries/Spotify/useSpotifyRecommendations";
+import { color } from "framer-motion";
 
 export default function Weather() {
   // ✅ 지역 상태
@@ -24,6 +28,7 @@ export default function Weather() {
   // ✅ 관심 장르
   const [userGenres, setUserGenres] = useState([]);
 
+
   // ✅ 미리듣기 상태
   const [playingPreview, setPlayingPreview] = useState(null);
 
@@ -35,7 +40,6 @@ export default function Weather() {
     const fetchUserGenres = async () => {
       try {
         const res = await reqGetUserGenres();
-        // 백엔드에서 body 대신 data로 오는 케이스 방어
         const genreList = Array.isArray(res?.data) ? res.data : res?.data?.body || [];
         const names = genreList.map((g) => (g.genre_name || g.genreName || "").toLowerCase());
         setUserGenres(names);
@@ -58,44 +62,35 @@ export default function Weather() {
 
   // ✅ 현재 날씨 텍스트 (UI용)
   const weatherDesc = weather?.weather?.[0]?.description || "";
-
-  // ✅ UI용 이모지/문구
   const { text, icon } = getWeatherLabel(weatherDesc);
 
-  // ✅ 백엔드에 보낼 날씨 키 (중요!!)
-  //    OpenWeatherMap의 main 값을 그대로 사용하고, 우리가 가진 매핑 키에 맞게 소문자로 변환
-  //    ex) "Clear" -> "clear", "Clouds" -> "clouds", "Rain" -> "rain"
+  // ✅ 백엔드용 weatherKey
   const weatherKeyForBackend = useMemo(() => {
-    const rawMain = weather?.weather?.[0]?.main || ""; // Clear / Clouds / Rain ...
-    const key = rawMain.toLowerCase(); // "clear" / "clouds" / "rain" ...
-    // 혹시라도 빈 값이면 fallback "default"
-    return key || "default";
+    const rawMain = weather?.weather?.[0]?.main || "";
+    return rawMain.toLowerCase() || "default";
   }, [weather]);
 
-  // ✅ 날씨 기반 트랙 (곡 단위) - 이제 항상 실제 날씨 키로 요청함
-  console.log("☁ weather.weather[0].main =", weather?.weather?.[0]?.main);
-  console.log("☁ weatherKeyForBackend (프론트 → 백) =", weatherKeyForBackend);
-
-  const { data: weatherTracks = [], isLoading: weatherLoading } = useWeatherTracks(weatherKeyForBackend);
-
-  // ✅ 감정 기반 트랙 (임시 감정: happy)
+  // ✅ 감정키 (임시)
   const emotionKey = "happy";
-  const { data: emotionData, isLoading: emotionLoading } = useEmotionTracks(emotionKey);
-  const emotionTracks = Array.isArray(emotionData)
-  ? emotionData
-  : emotionData?.body || [];
 
-  // ✅ 30초 미리듣기 재생
+  // ✅ 추천곡 요청
+  const {
+    data: weatherTracks = [],
+    isLoading: weatherLoading,
+  } = useWeatherRecommendations(weatherKeyForBackend);
+
+  const {
+    data: emotionTracks = [],
+    isLoading: emotionLoading,
+  } = useEmotionRecommendations(emotionKey);
+
+  // ✅ 미리듣기 재생
   const handlePlayPreview = (previewUrl) => {
     if (!previewUrl) {
       alert("이 곡은 미리듣기를 지원하지 않습니다 😢");
       return;
     }
-
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-
+    if (audioRef.current) audioRef.current.pause();
     const audio = new Audio(previewUrl);
     audioRef.current = audio;
     audio.play();
@@ -142,7 +137,6 @@ export default function Weather() {
         <div css={s.leftScroll}>
           <section css={s.todayBox}>
             <div className="date">{date}</div>
-
             <WeatherLocation
               selectedCity={selectedCity}
               selectedDistrict={selectedDistrict}
@@ -151,12 +145,8 @@ export default function Weather() {
                 setSelectedDistrict("");
               }}
               onSelectDistrict={(district) => setSelectedDistrict(district)}
-              onApply={(city, district) => {
-                console.log("✅ 적용:", city, district);
-              }}
+              onApply={(city, district) => console.log("✅ 적용:", city, district)}
             />
-
-            {/* 메인 날씨 */}
             <div className="main">
               <div className="tempBox">
                 <p className="temp">{Math.round(weather.main.temp)}°</p>
@@ -166,8 +156,6 @@ export default function Weather() {
                 </p>
               </div>
             </div>
-
-            {/* 상세 정보 */}
             <div className="detail">
               <div>🌅 일출 {new Date(weather.sys.sunrise * 1000).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}</div>
               <div>🌇 일몰 {new Date(weather.sys.sunset * 1000).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}</div>
@@ -176,16 +164,13 @@ export default function Weather() {
             </div>
           </section>
 
-          {/* 시간대별 예보 */}
           <WeatherHourlyList todayHourly={todayHourly || []} />
-
-          {/* 주간 예보 */}
           <WeatherList forecast={forecast || []} />
         </div>
 
-        {/* 오른쪽 영역 (Spotify) */}
+        {/* 오른쪽 영역 (추천 섹션) */}
         <div css={s.rightScroll}>
-          {/* 날씨 기반 추천 곡 */}
+          {/* 날씨 기반 추천 */}
           <section css={s.playlistBox}>
             <div css={s.playlistHeader}>
               <h2>오늘 날씨에 어울리는 곡들 🎵</h2>
@@ -193,7 +178,6 @@ export default function Weather() {
                 🎧 관심 장르 편집
               </span>
             </div>
-
             {weatherLoading ? (
               <p>불러오는 중...</p>
             ) : weatherTracks.length === 0 ? (
@@ -205,7 +189,11 @@ export default function Weather() {
                     <img src={t.image} alt={t.name} css={s.albumArtSmall} />
                     <p className="title">{t.name}</p>
                     <p className="artist">{t.artist}</p>
-                    <button css={s.playButton} disabled={!t.preview} onClick={() => handlePlayPreview(t.preview)}>
+                    <button
+                      css={s.playButton}
+                      disabled={!t.preview}
+                      onClick={() => handlePlayPreview(t.preview)}
+                    >
                       {!t.preview ? "미리듣기 없음 😢" : playingPreview === t.preview ? "⏸ 정지" : "▶ 재생"}
                     </button>
                   </div>
@@ -214,9 +202,9 @@ export default function Weather() {
             )}
           </section>
 
-          {/* 감정 기반 트랙 */}
+          {/* 감정 기반 추천 */}
           <section css={s.moodBox}>
-            <h3>최근 ‘{emotionKey}’했던 당신을 위한 멜로디 🎧</h3>
+            <h2>최근 ‘{emotionKey}’했던 당신을 위한 멜로디 🎧</h2>
             {emotionLoading ? (
               <p>로딩 중...</p>
             ) : emotionTracks.length === 0 ? (
@@ -230,8 +218,8 @@ export default function Weather() {
                     <p className="artist">{t.artist}</p>
                     <button
                       css={s.playButton}
-                      disabled={!t.preview} // ✅ 미리듣기 없으면 비활성화
-                      onClick={() => t.preview && handlePlayPreview(t.preview)}
+                      disabled={!t.preview}
+                      onClick={() => handlePlayPreview(t.preview)}
                     >
                       {!t.preview ? "미리듣기 없음 😢" : playingPreview === t.preview ? "⏸ 정지" : "▶ 재생"}
                     </button>

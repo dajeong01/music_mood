@@ -1,9 +1,9 @@
 package org.example.music_backend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.music_backend.domain.spotify.genre.Genre;
 import org.example.music_backend.dto.response.ResponseDto;
 import org.example.music_backend.service.GenreService;
-import org.example.music_backend.service.SpotifyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +21,7 @@ public class GenreController {
     @GetMapping
     public ResponseEntity<ResponseDto<?>> getAllGenres() {
         System.out.println("🎵 [GenreController] /api/genres 호출됨");
-        List<Map<String, Object>> genres = genreService.getAllGenres();
+        List<Genre> genres = genreService.getAllGenres();
         return ResponseEntity.ok(ResponseDto.success(genres));
     }
 }

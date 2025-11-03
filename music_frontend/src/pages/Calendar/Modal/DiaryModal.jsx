@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import * as s from "./styles";
 
-export default function DiaryModal({ isOpen, onClose, onSave }) {
+export default function DiaryModal({ isOpen, onClose, onSave, diary }) {
   const [selectedEmotion, setSelectedEmotion] = useState("happy");
   const [content, setContent] = useState("");
 
@@ -20,8 +20,11 @@ export default function DiaryModal({ isOpen, onClose, onSave }) {
     if (!isOpen) {
       setSelectedEmotion("happy");
       setContent("");
+    } else if (diary) {
+      setSelectedEmotion(diary.emotion || "happy");
+      setContent(diary.content || "");
     }
-  }, [isOpen]);
+  }, [isOpen, diary]);
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) onClose();

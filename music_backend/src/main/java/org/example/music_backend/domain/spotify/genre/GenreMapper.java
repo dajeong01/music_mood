@@ -8,6 +8,8 @@ import java.util.Map;
 @Mapper
 public interface GenreMapper {
 
-    List<Map<String, Object>> getAllGenres();
-    List<Genre> getGenreNames(List<Integer> genreIds);
+    List<Genre> getAllGenres();
+
+    // 여러 장르 id로 이름 조회
+    List<Genre> findGenreNamesByIds(List<Integer> genreIds);
 }

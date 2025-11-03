@@ -13,8 +13,11 @@
         VALUES (#{userId}, #{genreId})
     </insert>
 
-    <select id="getUserGenres" resultType="int">
-        SELECT genre_id FROM user_genre_tb WHERE user_id = #{userId}
+
+    <select id="findGenreIdsByUserId" resultType="java.lang.Integer">
+        SELECT genre_id
+        FROM user_genre_tb
+        WHERE user_id = #{userId}
     </select>
 
 </mapper>

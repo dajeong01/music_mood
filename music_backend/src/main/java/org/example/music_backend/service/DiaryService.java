@@ -61,4 +61,11 @@ public class DiaryService {
         params.put("endDate", endDate.format(formatter));
         return diaryMapper.findMonthlyDiaries(params);
     }
+
+    public Diary getDiaryByDate(int userId, String date) {
+        return diaryMapper.findDiaryByUserIdAndDate(userId, date);
+    }
 }
+
+
+

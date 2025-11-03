@@ -4,25 +4,19 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.music_backend.domain.spotify.genre.GenreMapper">
 
-    <select id="getAllGenres" resultType="map">
-        SELECT
-        genre_id,
-        genre_name
+    <select id="getAllGenres" resultType="org.example.music_backend.domain.spotify.genre.Genre">
+        SELECT genre_id, genre_name
         FROM genre_tb
         ORDER BY genre_id ASC
     </select>
 
-    <select id="getGenreNames" parameterType="list" resultType="org.example.music_backend.domain.spotify.genre.Genre">
-        SELECT
-        genre_id AS genreId,
-        genre_name AS genreName
+    <select id="findGenreNamesByIds" resultType="org.example.music_backend.domain.spotify.genre.Genre">
+        SELECT genre_id, genre_name
         FROM genre_tb
         WHERE genre_id IN
-        <foreach collection="list" item="id" open="(" separator="," close=")">
+        <foreach collection="genreIds" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>
     </select>
-
-
 
 </mapper>

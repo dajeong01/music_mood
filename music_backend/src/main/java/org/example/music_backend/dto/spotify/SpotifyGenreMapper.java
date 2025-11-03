@@ -3,6 +3,7 @@ package org.example.music_backend.dto.spotify;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SpotifyGenreMapper {
@@ -36,18 +37,12 @@ public class SpotifyGenreMapper {
     /**
      * ✅ DB 장르명을 Spotify seed_genres 형식으로 변환
      */
-    public static List<String> mapToSpotifyGenres(List<String> genres) {
-        return genres.stream()
-                .map(String::toLowerCase)
-                .map(g -> GENRE_MAP.getOrDefault(g, g.replace("-", "").replace(" ", "")))
-                .filter(g -> !g.isBlank())
+    public static List<String> mapToSpotifyGenres(List<String> inputGenres) {
+        return inputGenres.stream()
+                .map(g -> GENRE_MAP.getOrDefault(g.toLowerCase(), null))
+                .filter(Objects::nonNull)
                 .distinct()
-                .collect(Collectors.toList());
-    }
-
-    public static void main(String[] args) {
-        List<String> input = List.of("ballad", "sad", "hip-hop", "k-pop", "study");
-        List<String> mapped = mapToSpotifyGenres(input);
-        System.out.println("🎧 Spotify Seeds → " + String.join(",", mapped));
+                .toList();
     }
 }
+

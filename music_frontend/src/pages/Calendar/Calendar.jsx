@@ -245,7 +245,7 @@ export default function Calendar() {
       </main>
 
       {/* ✨ 모달 */}
-      <DiaryModal isOpen={openModal} onClose={() => setOpenModal(false)} onSave={handleSaveDiary} />
+      <DiaryModal isOpen={openModal} onClose={() => setOpenModal(false)} onSave={handleSaveDiary} diary={diaryData.find((d) => new Date(d.date).getDate() === modalDate)}/>
     </div>
   );
 }
