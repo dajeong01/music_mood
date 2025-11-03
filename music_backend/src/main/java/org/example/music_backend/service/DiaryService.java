@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,28 @@ public class DiaryService {
 
     public Diary getDiaryByDate(int userId, String date) {
         return diaryMapper.findDiaryByUserIdAndDate(userId, date);
+    }
+
+
+    public Map<String, Object> getDiaryStatistics() {
+        Integer userId = principalUtil.getPrincipalUser().getUser().getUserId();
+
+        List<Map<String, Object>> emotionStats = diaryMapper.getEmotionStatistics(Map.of("userId", userId));
+        int totalCount = diaryMapper.getTotalDiaryCount(userId);
+
+        String mostEmotion = "데이터 없음";
+        if (!emotionStats.isEmpty()) {
+            mostEmotion = emotionStats.stream()
+                    .max(Comparator.comparingInt(e -> Integer.parseInt(e.get("count").toString())))
+                    .map(e -> (String) e.get("emotion"))
+                    .orElse("데이터 없음");
+        }
+
+        return Map.of(
+                "totalCount", totalCount,
+                "mostEmotion", mostEmotion,
+                "emotionStats", emotionStats
+        );
     }
 }
 

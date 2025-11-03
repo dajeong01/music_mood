@@ -58,4 +58,20 @@
             AND DATE(date) = #{date}
     </select>
 
+    <select id="getEmotionStatistics" parameterType="map" resultType="map">
+        SELECT
+        emotion,
+        COUNT(*) AS count
+        FROM diaries_tb
+        WHERE user_id = #{userId}
+        AND `date` BETWEEN DATE_SUB(CURDATE(), INTERVAL 28 DAY)
+        AND CURDATE()
+        GROUP BY emotion;
+    </select>
+
+
+    <select id="getTotalDiaryCount" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM diaries_tb WHERE user_id = #{userId};
+    </select>
+
 </mapper>

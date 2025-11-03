@@ -12,6 +12,11 @@ public interface DiaryMapper {
     int updateDiary(Diary diary);
     Diary findDiaryByUserAndDate(Map<String, Object> params);
     List<Diary> findMonthlyDiaries(Map<String, Object> params);
-
     Diary findDiaryByUserIdAndDate(@Param("userId") int userId, @Param("date") String date);
+
+    List<Map<String, Object>> getEmotionStatistics(Map<String, Integer> userId);
+
+    int getTotalDiaryCount(Integer userId);
+
+
 }

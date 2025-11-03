@@ -9,3 +9,8 @@ export const reqGetMonthlyDiaries = async (month) => {
     params: { month },
   });
 };
+
+export const reqGetDiaryStatistics = async () => {
+  const res = await api.get("/api/diary/statistics");
+  return res.data;
+};

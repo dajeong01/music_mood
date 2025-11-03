@@ -41,5 +41,10 @@ public class DiaryController {
         return ResponseEntity.ok(new ResponseDto<>(200, "일기 조회 성공", diary));
     }
 
+    @GetMapping("/statistics")
+    public ResponseEntity<?> getStatistics() {
+        return ResponseEntity.ok(diaryService.getDiaryStatistics());
+    }
+
 
 }

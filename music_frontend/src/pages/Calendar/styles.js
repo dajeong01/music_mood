@@ -30,7 +30,7 @@ export const pageWrapper = css`
 export const mainContent = css`
   flex: 1;
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.4fr 1fr;
   gap: 30px;
   padding: 30px 40px;
   overflow: hidden;
@@ -92,7 +92,7 @@ export const navButton = css`
 export const calendarGrid = css`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 12px;
+  gap: 10px;
   text-align: center;
 `;
 
@@ -113,7 +113,7 @@ export const dayHeaderSat = css`
 
 export const dayCell = ({ inMonth, isToday, isSelected }) => css`
   position: relative;
-  aspect-ratio: 2.1 / 1;
+  aspect-ratio: 2.5 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,13 +171,13 @@ export const chartTitle = css`
   font-weight: 700;
   color: ${theme.textPrimary};
   font-size: 1.3rem;
-  margin-bottom: px;
+  // margin-bottom: px;
 `;
 
 export const donutChartWrapper = css`
   position: relative;
-  width: 110px;
-  height: 110px;
+  width: 70px;
+  height: 70px;
   margin: 0 auto;
 `;
 

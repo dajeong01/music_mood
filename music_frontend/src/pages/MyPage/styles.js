@@ -336,3 +336,55 @@ export const dangerItem = css`
     color: #d9534f;
   }
 `;
+
+export const barChartWrapper = css`
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+export const barItem = css`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const barLabel = css`
+  width: 90px;
+  font-size: 1rem;
+  color: #5d4037;
+  font-weight: 500;
+`;
+
+export const barBackground = css`
+  flex: 1;
+  height: 14px;
+  background: #f5f1ed;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+`;
+
+export const barFill = css`
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+`;
+
+export const barPercent = css`
+  width: 50px;
+  text-align: right;
+  font-size: 0.95rem;
+  color: #8b7d76;
+  font-weight: 500;
+`;
+
+export const totalText = css`
+  margin-top: 20px;
+  text-align: center;
+  font-size: 1.05rem;
+  color: #6b4b3e;
+  font-weight: 500;
+`;
+
