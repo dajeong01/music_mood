@@ -45,4 +45,18 @@ public class SpotifyRecommendationController {
 
         return ResponseEntity.ok(Map.of("tracks", tracks));
     }
+
+    @GetMapping("/mix")
+    public ResponseEntity<?> getMixedRecommendations(
+            @RequestParam String weatherKey,
+            @RequestParam String emotionKey,
+            @RequestParam(defaultValue = "10") int limit) {
+        System.out.println(weatherKey + "|" + emotionKey);
+
+        Integer userId = principalUtil.getPrincipalUser().getUser().getUserId();
+
+        var tracks = spotifyRecommendationService.getMixedRecommendations(userId, weatherKey, emotionKey, limit);
+
+        return ResponseEntity.ok(Map.of("tracks", tracks));
+    }
 }

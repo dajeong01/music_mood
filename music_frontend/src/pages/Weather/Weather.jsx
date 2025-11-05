@@ -11,11 +11,9 @@ import * as s from "./styles";
 
 // ✅ API / Query
 import { reqGetUserGenres } from "../../api/Spotify/UserGenreApi";
-import {
-  useEmotionRecommendations,
-  useWeatherRecommendations,
-} from "../../queries/Spotify/useSpotifyRecommendations";
+import { useEmotionRecommendations, useWeatherRecommendations } from "../../queries/Spotify/useSpotifyRecommendations";
 import { color } from "framer-motion";
+import { useWeatherStore } from "../../stores/weatherStore";
 
 export default function Weather() {
   // ✅ 지역 상태
@@ -28,12 +26,26 @@ export default function Weather() {
   // ✅ 관심 장르
   const [userGenres, setUserGenres] = useState([]);
 
-
   // ✅ 미리듣기 상태
   const [playingPreview, setPlayingPreview] = useState(null);
 
   // ✅ 위치 + 날씨 API
   const { coords, weather, forecast, todayHourly, loading } = useLocationQuery(selectedCity, selectedDistrict);
+
+  const setWeatherData = useWeatherStore((s) => s.setWeatherData);
+  console.log(setWeatherData)
+
+  // ✅ 날씨 store 업데이트 (useEffect 사용해서 한 번만!)
+  useEffect(() => {
+    if (!loading && coords && weather) {
+      setWeatherData({
+        coords,
+        weather,
+        forecast: forecast || [],
+        todayHourly: todayHourly || [],
+      });
+    }
+  }, [loading, coords, weather, forecast, todayHourly]);
 
   // ✅ 관심 장르 불러오기
   useEffect(() => {
@@ -74,15 +86,9 @@ export default function Weather() {
   const emotionKey = "happy";
 
   // ✅ 추천곡 요청
-  const {
-    data: weatherTracks = [],
-    isLoading: weatherLoading,
-  } = useWeatherRecommendations(weatherKeyForBackend);
+  const { data: weatherTracks = [], isLoading: weatherLoading } = useWeatherRecommendations(weatherKeyForBackend);
 
-  const {
-    data: emotionTracks = [],
-    isLoading: emotionLoading,
-  } = useEmotionRecommendations(emotionKey);
+  const { data: emotionTracks = [], isLoading: emotionLoading } = useEmotionRecommendations(emotionKey);
 
   // ✅ 미리듣기 재생
   const handlePlayPreview = (previewUrl) => {
@@ -189,11 +195,7 @@ export default function Weather() {
                     <img src={t.image} alt={t.name} css={s.albumArtSmall} />
                     <p className="title">{t.name}</p>
                     <p className="artist">{t.artist}</p>
-                    <button
-                      css={s.playButton}
-                      disabled={!t.preview}
-                      onClick={() => handlePlayPreview(t.preview)}
-                    >
+                    <button css={s.playButton} disabled={!t.preview} onClick={() => handlePlayPreview(t.preview)}>
                       {!t.preview ? "미리듣기 없음 😢" : playingPreview === t.preview ? "⏸ 정지" : "▶ 재생"}
                     </button>
                   </div>
@@ -216,11 +218,7 @@ export default function Weather() {
                     <img src={t.image} alt={t.name} css={s.albumArtSmall} />
                     <p className="title">{t.name}</p>
                     <p className="artist">{t.artist}</p>
-                    <button
-                      css={s.playButton}
-                      disabled={!t.preview}
-                      onClick={() => handlePlayPreview(t.preview)}
-                    >
+                    <button css={s.playButton} disabled={!t.preview} onClick={() => handlePlayPreview(t.preview)}>
                       {!t.preview ? "미리듣기 없음 😢" : playingPreview === t.preview ? "⏸ 정지" : "▶ 재생"}
                     </button>
                   </div>

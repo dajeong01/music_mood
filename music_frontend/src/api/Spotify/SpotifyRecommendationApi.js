@@ -12,3 +12,9 @@ export const reqGetEmotionRecommendations = async (emotionKey) => {
     params: { emotionKey },
   });
 };
+
+export const reqGetMixRecommendations = async (weatherKey, emotionKey) => {
+  return api.get(`/api/spotify/recommendations/mix`, {
+    params: { weatherKey, emotionKey },
+  });
+};

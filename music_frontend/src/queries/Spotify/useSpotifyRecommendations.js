@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { reqGetEmotionRecommendations, reqGetWeatherRecommendations } from "../../api/Spotify/SpotifyRecommendationApi";
+import { reqGetEmotionRecommendations, reqGetMixRecommendations, reqGetWeatherRecommendations } from "../../api/Spotify/SpotifyRecommendationApi";
 
 export const useWeatherRecommendations = (weatherKey) => {
   return useQuery({
@@ -20,5 +20,16 @@ export const useEmotionRecommendations = (emotionKey) => {
       return res.data.tracks;
     },
     enabled: !!emotionKey,
+  });
+};
+
+export const useMixRecommendations = (weatherKey, emotionKey) => {
+  return useQuery({
+    queryKey: ["mixRecommendations", weatherKey, emotionKey],
+    queryFn: async () => {
+      const res = await reqGetMixRecommendations(weatherKey, emotionKey);
+      return res.data.tracks;
+    },
+    enabled: !!weatherKey && !!emotionKey,
   });
 };
