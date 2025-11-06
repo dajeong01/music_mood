@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.music_backend.domain.spotify.playlist.PlaylistMapper">
+
+    <insert id="createPlaylist" parameterType="org.example.music_backend.dto.spotify.PlaylistDto">
+        INSERT INTO playlist (user_id, emoji_key, title)
+        VALUES (#{userId}, #{emojiKey}, #{title});
+    </insert>
+
+    <select id="findByUserId" resultType="org.example.music_backend.dto.spotify.PlaylistDto">
+        SELECT playlist_id AS playlistId,
+        user_id AS userId,
+        emoji_key AS emojiKey,
+        title
+        FROM playlist
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC;
+    </select>
+
+    <insert id="insertTrack" parameterType="org.example.music_backend.domain.spotify.playlist.PlaylistTrack">
+        INSERT INTO playlist_track
+        (playlist_id, track_id, track_name, artist_name, image_url, preview_url, created_at)
+        VALUES
+        (#{playlistId}, #{trackId}, #{trackName}, #{artistName}, #{imageUrl}, #{previewUrl}, NOW());
+    </insert>
+
+    <select id="getTracksByPlaylistId" resultType="org.example.music_backend.domain.spotify.playlist.PlaylistTrack">
+        SELECT
+            playlist_track_id AS playlistTrackId,
+            playlist_id AS playlistId,
+            track_id AS trackId,
+            track_name AS trackName,
+            artist_name AS artistName,
+            image_url AS imageUrl,
+            preview_url AS previewUrl,
+            created_at AS createdAt
+        FROM playlist_track
+        WHERE playlist_id = #{playlistId}
+        ORDER BY created_at DESC;
+    </select>
+
+
+
+
+</mapper>

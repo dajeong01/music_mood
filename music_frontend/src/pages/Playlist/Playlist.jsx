@@ -1,19 +1,21 @@
 /** @jsxImportSource @emotion/react */
+import { useState } from "react";
 import LeftSideBarLayout from "../../components/LeftSideBarLayout/LeftSideBarLayout";
+import { usePlaylists } from "../../queries/Spotify/usePlaylist";
+import NewPlaylistModal from "./New/NewPlaylistModal";
 import * as s from "./styles";
-import { useNavigate } from "react-router-dom";
+import PlaylistDetailModal from "./Tracks/PlaylistDetailModal";
+
 
 export default function Playlist() {
-  const navigate = useNavigate();
+  const { data: playlists } = usePlaylists();
 
-  // 임시 데이터 — 나중에 API 연결 예정
-  const playlists = [
-    { id: 1, emoji: "🌧️", title: "비 오는 날 오후", count: 12 },
-    { id: 2, emoji: "☀️", title: "햇살 좋은 아침에", count: 23 },
-    { id: 3, emoji: "😴", title: "잠 못 드는 새벽", count: 8 },
-    { id: 4, emoji: "👟", title: "숲속에서 힐링", count: 15 },
-    { id: 5, emoji: "❤️", title: "사랑이 시작될 때", count: 31 },
-  ];
+  // 새 플레이리스트 모달
+  const [openNewModal, setOpenNewModal] = useState(false);
+
+  // 플레이리스트 상세 모달
+  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const [openPlaylistModal, setOpenPlaylistModal] = useState(false);
 
   return (
     <div css={s.pageWrapper}>
@@ -21,26 +23,44 @@ export default function Playlist() {
 
       <div css={s.container}>
         <h1 css={s.title}>나의 플레이리스트</h1>
-        <p css={s.subtitle}>당신의 감정들이 모여 만들어진 멜로디.</p>
 
         <div css={s.grid}>
-          {/* ✅ 새 플레이리스트 버튼 */}
-          <button css={s.newPlaylistCard} onClick={() => alert("새 playlist 만들기!")}>
-            <div css={s.plusIcon}>+</div>
+          {/* 새 플레이리스트 생성 버튼 */}
+          <button css={s.newCard} onClick={() => setOpenNewModal(true)}>
+            <span css={s.plus}>＋</span>
             <span css={s.newText}>새 플레이리스트</span>
           </button>
 
-          {/* ✅ 플레이리스트 목록 */}
-          {playlists.map((p) => (
-            <div key={p.id} css={s.card} onClick={() => navigate(`/playlist/${p.id}`)}>
-              <div css={s.cover}>{p.emoji}</div>
+          {/* 플레이리스트 카드 */}
+          {playlists?.map((pl) => (
+            <div
+              key={pl.playlistId}
+              css={s.card}
+              onClick={() => {
+                setSelectedPlaylist(pl);
+                setOpenPlaylistModal(true);
+              }}
+            >
+              <div css={s.cover}>{pl.emojiKey}</div>
               <div css={s.cardBody}>
-                <h3 css={s.cardTitle}>{p.title}</h3>
-                <p css={s.cardCount}>{p.count}곡</p>
+                <h3 css={s.cardTitle}>{pl.title}</h3>
               </div>
             </div>
           ))}
         </div>
+
+        {/* 새 플레이리스트 모달 */}
+        {openNewModal && (
+          <NewPlaylistModal onClose={() => setOpenNewModal(false)} />
+        )}
+
+        {/* 플레이리스트 상세 모달 */}
+        {openPlaylistModal && (
+          <PlaylistDetailModal
+            playlist={selectedPlaylist}
+            onClose={() => setOpenPlaylistModal(false)}
+          />
+        )}
       </div>
     </div>
   );

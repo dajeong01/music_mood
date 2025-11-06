@@ -59,6 +59,7 @@ public class SecurityConfig {
             auth.requestMatchers("/api/genres/**").permitAll();
             auth.requestMatchers("/api/calendar/**").permitAll();
             auth.requestMatchers("/api/spotify/**").permitAll();
+            auth.requestMatchers("/api/playlist/**").permitAll();
             auth.anyRequest().authenticated();
         });
 
@@ -73,7 +74,7 @@ public class SecurityConfig {
                 .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
                 .successHandler(oAuth2SuccessHandler)
                 .failureHandler((request, response, exception) -> {
-                    System.out.println("oauth2 인증 실패");
+//                    System.out.println("oauth2 인증 실패");
                     exception.printStackTrace();
                     response.sendRedirect("/?error=oauth2");
                 })

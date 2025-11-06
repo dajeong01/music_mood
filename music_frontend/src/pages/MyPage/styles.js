@@ -146,6 +146,43 @@ export const email = css`
   color: #b0a49f;
 `;
 
+export const myPlaylistGrid = css`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 14px;
+  margin-top: 10px;
+`;
+
+export const myPlaylistCard = css`
+  cursor: pointer;
+  background: #faf8f4;
+  border-radius: 14px;
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  }
+`;
+
+export const myPlaylistIcon = css`
+  font-size: 32px;
+`;
+
+export const myPlaylistTitle = css`
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  color: #5a4a37;
+`;
+
+
 // 감정 통계
 export const statsGrid = css`
   display: grid;
@@ -165,14 +202,14 @@ export const statItem = css`
 `;
 
 export const statLabel = css`
-  font-size: 0.95rem;
+  font-size: 1.5rem;
   color: #8b7d76;
   text-align: center;
   line-height: 1.3;
 `;
 
 export const statValue = css`
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: #5d4037;
   display: flex;

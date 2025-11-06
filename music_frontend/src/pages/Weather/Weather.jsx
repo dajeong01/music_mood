@@ -92,18 +92,18 @@ export default function Weather() {
   const { data: emotionTracks = [], isLoading: emotionLoading } = useEmotionRecommendations(emotionKey);
 
   // ✅ 미리듣기 재생
-  const handlePlayPreview = (previewUrl) => {
-    if (!previewUrl) {
-      alert("이 곡은 미리듣기를 지원하지 않습니다 😢");
-      return;
-    }
-    if (audioRef.current) audioRef.current.pause();
-    const audio = new Audio(previewUrl);
-    audioRef.current = audio;
-    audio.play();
-    setPlayingPreview(previewUrl);
-    audio.onended = () => setPlayingPreview(null);
-  };
+  // const handlePlayPreview = (previewUrl) => {
+  //   if (!previewUrl) {
+  //     alert("이 곡은 미리듣기를 지원하지 않습니다 😢");
+  //     return;
+  //   }
+  //   if (audioRef.current) audioRef.current.pause();
+  //   const audio = new Audio(previewUrl);
+  //   audioRef.current = audio;
+  //   audio.play();
+  //   setPlayingPreview(previewUrl);
+  //   audio.onended = () => setPlayingPreview(null);
+  // };
 
   // ✅ 로딩 중
   if (loading)
@@ -203,9 +203,9 @@ export default function Weather() {
                     <img src={t.image} alt={t.name} css={s.albumArtSmall} />
                     <p className="title">{t.name}</p>
                     <p className="artist">{t.artist}</p>
-                    <button css={s.playButton} disabled={!t.preview} onClick={() => handlePlayPreview(t.preview)}>
+                    {/* <button css={s.playButton} disabled={!t.preview} onClick={() => handlePlayPreview(t.preview)}>
                       {!t.preview ? "미리듣기 없음 😢" : playingPreview === t.preview ? "⏸ 정지" : "▶ 재생"}
-                    </button>
+                    </button> */}
                   </div>
                 ))}
               </div>
@@ -233,9 +233,9 @@ export default function Weather() {
                     <img src={t.image} alt={t.name} css={s.albumArtSmall} />
                     <p className="title">{t.name}</p>
                     <p className="artist">{t.artist}</p>
-                    <button css={s.playButton} disabled={!t.preview} onClick={() => handlePlayPreview(t.preview)}>
+                    {/* <button css={s.playButton} disabled={!t.preview} onClick={() => handlePlayPreview(t.preview)}>
                       {!t.preview ? "미리듣기 없음 😢" : playingPreview === t.preview ? "⏸ 정지" : "▶ 재생"}
-                    </button>
+                    </button> */}
                   </div>
                 ))}
               </div>

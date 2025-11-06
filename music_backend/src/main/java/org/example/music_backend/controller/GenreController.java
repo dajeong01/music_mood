@@ -20,7 +20,7 @@ public class GenreController {
 
     @GetMapping
     public ResponseEntity<ResponseDto<?>> getAllGenres() {
-        System.out.println("🎵 [GenreController] /api/genres 호출됨");
+//        System.out.println("🎵 [GenreController] /api/genres 호출됨");
         List<Genre> genres = genreService.getAllGenres();
         return ResponseEntity.ok(ResponseDto.success(genres));
     }

@@ -8,12 +8,15 @@ import { useEmotionStore } from "../../stores/emotionStore";
 import { useWeatherStore } from "../../stores/weatherStore";
 import DiaryModal from "./Modal/DiaryModal";
 import * as s from "./styles";
+import TrackModal from "../Spotify/TrackModal";
 
 export default function Calendar() {
   const [selectedDay, setSelectedDay] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [modalDate, setModalDate] = useState(null);
   const [diaryData, setDiaryData] = useState([]);
+  const [selectedTrack, setSelectedTrack] = useState(null);
+  const [isTrackModalOpen, setIsTrackModalOpen] = useState(false);
 
   const setEmotion = useEmotionStore((s) => s.setEmotion);
   // ✅ 위치 + 날씨 API (Weather.jsx와 동일하게!)
@@ -256,7 +259,14 @@ export default function Calendar() {
                     <p>추천곡이 없어요 😢</p>
                   ) : (
                     mixedTracks.slice(0, 10).map((t, i) => (
-                      <div key={i} css={s.playlistItem}>
+                      <div
+                        key={i}
+                        css={s.playlistItem}
+                        onClick={() => {
+                          setSelectedTrack(t);
+                          setIsTrackModalOpen(true);
+                        }}
+                      >
                         <img src={t.image} css={s.albumArt} alt="Album Art" />
                         <div css={s.songInfo}>
                           <p css={s.songTitle}>{t.name}</p>
@@ -264,7 +274,7 @@ export default function Calendar() {
                         </div>
 
                         {/* 🎧 미리듣기 버튼 자리 - 나중에 연결 */}
-                        {t.preview ? <audio controls src={t.preview} style={{ width: "80px" }} /> : <span css={s.noPreview}>미리듣기 없음 😢</span>}
+                        {/* {t.preview ? <audio controls src={t.preview} style={{ width: "80px" }} /> : <span css={s.noPreview}>미리듣기 없음 😢</span>} */}
                       </div>
                     ))
                   )}
@@ -293,6 +303,7 @@ export default function Calendar() {
         onSave={handleSaveDiary}
         diary={diaryData.find((d) => new Date(d.date).getDate() === modalDate)}
       />
+      {isTrackModalOpen && selectedTrack && <TrackModal track={selectedTrack} onClose={() => setIsTrackModalOpen(false)} />}
     </div>
   );
 }

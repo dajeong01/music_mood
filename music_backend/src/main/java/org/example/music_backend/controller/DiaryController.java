@@ -35,7 +35,7 @@ public class DiaryController {
     @GetMapping
     public ResponseEntity<?> getDiaryByDate(@RequestParam String date) {
         int userId = principalUtil.getPrincipalUser().getUser().getUserId();
-        System.out.println("📖 [Diary GET] userId=" + userId + ", date=" + date);
+//        System.out.println("📖 [Diary GET] userId=" + userId + ", date=" + date);
 
         Diary diary = diaryService.getDiaryByDate(userId, date);
         return ResponseEntity.ok(new ResponseDto<>(200, "일기 조회 성공", diary));

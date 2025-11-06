@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/nickname/check")
     public ResponseEntity<ResponseDto<?>> checkNickname(@RequestParam String nickname) {
-        System.out.println(nickname);
+//        System.out.println(nickname);
         return ResponseEntity.ok(ResponseDto.success(userService.checkNickname(nickname)));
     }
 

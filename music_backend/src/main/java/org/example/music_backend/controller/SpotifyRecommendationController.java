@@ -24,7 +24,7 @@ public class SpotifyRecommendationController {
     public ResponseEntity<?> getWeatherRecommendations(
             @RequestParam String weatherKey) {
         Integer userId = principalUtil.getPrincipalUser().getUser().getUserId();
-        System.out.println("🎵 [Weather Recommendation] userId=" + userId + ", weatherKey=" + weatherKey);
+//        System.out.println("🎵 [Weather Recommendation] userId=" + userId + ", weatherKey=" + weatherKey);
 
 
         List<SpotifyTrackDto> tracks =
@@ -39,7 +39,7 @@ public class SpotifyRecommendationController {
             @RequestParam String emotionKey) {
 
         Integer userId = principalUtil.getPrincipalUser().getUser().getUserId();
-        System.out.println("🎵 [Emotion Recommendation] userId=" + userId + ", emotionKey=" + emotionKey);
+//        System.out.println("🎵 [Emotion Recommendation] userId=" + userId + ", emotionKey=" + emotionKey);
         List<SpotifyTrackDto> tracks =
                 spotifyRecommendationService.getEmotionBasedRecommendations(userId, emotionKey);
 
@@ -51,7 +51,7 @@ public class SpotifyRecommendationController {
             @RequestParam String weatherKey,
             @RequestParam String emotionKey,
             @RequestParam(defaultValue = "10") int limit) {
-        System.out.println(weatherKey + "|" + emotionKey);
+        //System.out.println(weatherKey + "|" + emotionKey);
 
         Integer userId = principalUtil.getPrincipalUser().getUser().getUserId();
 

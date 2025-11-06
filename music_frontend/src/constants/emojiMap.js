@@ -1,0 +1,17 @@
+export const EMOJI_MAP = {
+  music: "🎵",
+  headphone: "🎧",
+  happy: "✨",
+  love: "❤️",
+  star: "⭐",
+  rain: "🌧️",
+  sun: "☀️",
+  sleep: "😴",
+  walk: "👟",
+  study: "📚",
+  coffee: "☕",
+  night: "🌙",
+  party: "🥳",
+  game: "🎮",
+  nature: "🌱",
+};

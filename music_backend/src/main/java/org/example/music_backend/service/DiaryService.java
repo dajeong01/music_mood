@@ -28,7 +28,7 @@ public class DiaryService {
         Map<String, Object> params = new HashMap<>();
         Integer userId = principalUtil.getPrincipalUser().getUser().getUserId();
         params.put("userId", userId);
-        System.out.println(userId);
+//        System.out.println(userId);
         params.put("date", dto.getDate());
 
         Diary diary = Diary.builder()
@@ -54,7 +54,7 @@ public class DiaryService {
 
         Map<String, Object> params = new HashMap<>();
         Integer userId = principalUtil.getPrincipalUser().getUser().getUserId();
-        System.out.println("✅ userId from principal = " + userId);
+//        System.out.println("✅ userId from principal = " + userId);
         params.put("userId", userId);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

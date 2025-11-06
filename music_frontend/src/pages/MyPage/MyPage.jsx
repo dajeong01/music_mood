@@ -11,8 +11,10 @@ import useDiaryStatisticsQuery from "../../queries/Diary/useDiaryStatisticsQuery
 import useUserGenreQuery from "../../queries/Spotify/useUserGenreQuery";
 import useUserDetailQuery from "../../queries/User/useUserDetailQuery";
 import * as s from "./styles";
+import { usePlaylists } from "../../queries/Spotify/usePlaylist";
 
 // 🎨 감정별 색상 매핑
+
 const colorMap = {
   happy: "#FFE066",
   tired: "#C9C9C9",
@@ -77,6 +79,7 @@ function EmotionHeatmap({ emotionStats = [] }) {
 
 export default function MyPage() {
   const navigate = useNavigate();
+  const { data: playlists = [] } = usePlaylists();
   const queryClient = useQueryClient();
 
   // ✅ 유저 정보
@@ -92,8 +95,10 @@ export default function MyPage() {
   const { data: stats, isLoading: statsLoading, isError: statsError } = useDiaryStatisticsQuery();
 
   const handleGenreUpdate = (newGenres) => console.log("✅ 업데이트된 장르:", newGenres);
-  const handleLogout = () => console.log("로그아웃 시도");
-  const handleDeactivate = () => console.log("회원 탈퇴 시도");
+  const handleLogout = () => {
+    console.log("로그아웃 시도");
+    navigate("/");
+};
 
   if (isLoading || genreLoading || statsLoading) return <div>로딩 중...</div>;
   if (isError || genreError || statsError) return <div>데이터를 불러오지 못했습니다 😢</div>;
@@ -112,24 +117,14 @@ export default function MyPage() {
             {/* 프로필 */}
             <section css={[s.card, s.profileCard]}>
               <div css={s.profileImgWrapper}>
-                <img
-                  src={`https://placehold.co/100x100/F8E9D7/5D4037?text=${user.nickname?.slice(0, 2) || "MD"}`}
-                  alt="프로필 이미지"
-                  css={s.profileImg}
-                />
+                <img src={`https://placehold.co/100x100/F8E9D7/5D4037?text=${user.nickname?.slice(0, 2) || "MD"}`} alt="프로필 이미지" css={s.profileImg} />
               </div>
 
               <div css={s.profileInfo}>
                 <div css={s.profileHeader}>
                   <NicknameEditor nickname={user.nickname} onUpdated={refetch} />
                 </div>
-                <p css={s.mood}>
-                  "
-                  {user.fullName
-                    ? `${user.fullName}님의 음악 일기 🎵`
-                    : "오늘의 감정을 기록해보세요 ☕"}
-                  "
-                </p>
+                <p css={s.mood}>"{user.fullName ? `${user.fullName}님의 음악 일기 🎵` : "오늘의 감정을 기록해보세요 ☕"}"</p>
                 <p css={s.email}>로그인 계정: {user.email}</p>
               </div>
             </section>
@@ -164,19 +159,17 @@ export default function MyPage() {
 
               <div css={s.subSection}>
                 <h3 css={s.subTitle}>내가 만든 플레이리스트</h3>
-                <div css={s.playlistGrid}>
-                  {user.playlists?.length > 0 ? (
-                    user.playlists.map((playlist) => (
-                      <div key={playlist.id} css={s.playlistItem}>
-                        <div css={s.playlistCover}>
-                          <span className="emoji">{playlist.emoji}</span>
-                        </div>
-                        <span>{playlist.name}</span>
+                <div css={s.myPlaylistGrid}>
+                  {playlists.length > 0 ? (
+                    playlists.map((pl) => (
+                      <div key={pl.playlistId} css={s.myPlaylistCard} onClick={() => navigate("/playlist")}>
+                        <div css={s.myPlaylistIcon}>{pl.emojiKey}</div>
+                        <span css={s.myPlaylistTitle}>{pl.title}</span>
                       </div>
                     ))
                   ) : (
                     <div css={s.emptyPlaylist}>
-                      <p>아직 플레이리스트가 없어요 </p>
+                      <p>아직 플레이리스트가 없어요 🎵</p>
                       <button css={s.addButton} onClick={() => navigate("/playlist")}>
                         ⨠ 새 플레이리스트 만들기
                       </button>
@@ -184,14 +177,7 @@ export default function MyPage() {
                   )}
                 </div>
               </div>
-
-              {isGenreModalOpen && (
-                <GenreEditModal
-                  selectedGenres={user.genres}
-                  onClose={() => setIsGenreModalOpen(false)}
-                  onSave={handleGenreUpdate}
-                />
-              )}
+              {isGenreModalOpen && <GenreEditModal selectedGenres={user.genres} onClose={() => setIsGenreModalOpen(false)} onSave={handleGenreUpdate} />}
             </section>
           </div>
 
@@ -218,10 +204,7 @@ export default function MyPage() {
                 <div css={s.statItem}>
                   <span css={s.statLabel}>총 멜로디 기록</span>
                   <span css={s.statValue}>
-                    <span style={{ color: "#FF9A76", fontWeight: 600 }}>
-                      {stats?.totalCount}
-                    </span>{" "}
-                    개
+                    <span style={{ color: "#FF9A76", fontWeight: 600 }}>{stats?.totalCount}</span> 개
                   </span>
                 </div>
               </div>
@@ -236,24 +219,24 @@ export default function MyPage() {
                 <Settings size={22} /> 계정 관리
               </h2>
               <div css={s.accountList}>
-                <div css={s.accountItem}>
+                {/* <div css={s.accountItem}>
                   <span>
                     <Bell size={18} /> 알림 설정
                   </span>
                   <span>&gt;</span>
-                </div>
+                </div> */}
                 <div css={s.accountItem} onClick={handleLogout}>
                   <span>
-                    <LogOut size={18} /> 로그아웃
+                    <LogOut size={18}/> 로그아웃
                   </span>
                   <span>&gt;</span>
                 </div>
-                <div css={[s.accountItem, s.dangerItem]} onClick={handleDeactivate}>
+                {/* <div css={[s.accountItem, s.dangerItem]} onClick={handleDeactivate}>
                   <span>
                     <Trash2 size={18} /> 회원 탈퇴
                   </span>
                   <span>&gt;</span>
-                </div>
+                </div> */}
               </div>
             </section>
           </div>

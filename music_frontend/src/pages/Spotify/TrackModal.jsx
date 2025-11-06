@@ -3,9 +3,11 @@ import { useState } from "react";
 import * as s from "./styles";
 import { CiStar } from "react-icons/ci";
 import { AiFillStar } from "react-icons/ai";
+import PlaylistPickerModal from "../Playlist/Pick/PlaylistPickModal";
 
 export default function TrackModal({ track, onClose }) {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [showPlaylistPicker, setShowPlaylistPicker] = useState(false);
 
   const openSpotify = () => {
     window.open(`https://open.spotify.com/track/${track.id}`, "_blank");
@@ -31,7 +33,13 @@ export default function TrackModal({ track, onClose }) {
             <p css={s.artist}>{track.artist}</p>
           </div>
 
-          <div css={s.favoriteIcon} onClick={() => setIsFavorite(!isFavorite)}>
+          <div
+            css={s.favoriteIcon}
+            onClick={() => {
+              setIsFavorite(true);
+              setShowPlaylistPicker(true);
+            }}
+          >
             {isFavorite ? <AiFillStar size={22} color="#FACC15" /> : <CiStar size={22} color="#444" />}
           </div>
         </div>
@@ -55,6 +63,7 @@ export default function TrackModal({ track, onClose }) {
           </button>
         </div>
       </div>
+      {showPlaylistPicker && <PlaylistPickerModal track={track} onClose={() => setShowPlaylistPicker(false)} />}
     </div>
   );
 }
