@@ -258,7 +258,6 @@ export default function Calendar() {
                     mixedTracks.slice(0, 10).map((t, i) => (
                       <div key={i} css={s.playlistItem}>
                         <img src={t.image} css={s.albumArt} alt="Album Art" />
-
                         <div css={s.songInfo}>
                           <p css={s.songTitle}>{t.name}</p>
                           <p css={s.songArtist}>{t.artist}</p>

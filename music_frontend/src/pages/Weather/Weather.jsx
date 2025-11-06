@@ -8,12 +8,10 @@ import WeatherLocation from "../../components/Weather/WeatherLocation";
 import useLocationQuery from "../../queries/Weather/useLocationQuery";
 import { getWeatherLabel } from "../../utils/weatherUtils";
 import * as s from "./styles";
-
-// ✅ API / Query
 import { reqGetUserGenres } from "../../api/Spotify/UserGenreApi";
 import { useEmotionRecommendations, useWeatherRecommendations } from "../../queries/Spotify/useSpotifyRecommendations";
-import { color } from "framer-motion";
 import { useWeatherStore } from "../../stores/weatherStore";
+import TrackModal from "../Spotify/TrackModal";
 
 export default function Weather() {
   // ✅ 지역 상태
@@ -33,7 +31,10 @@ export default function Weather() {
   const { coords, weather, forecast, todayHourly, loading } = useLocationQuery(selectedCity, selectedDistrict);
 
   const setWeatherData = useWeatherStore((s) => s.setWeatherData);
-  console.log(setWeatherData)
+  console.log(setWeatherData);
+
+  const [selectedTrack, setSelectedTrack] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // ✅ 날씨 store 업데이트 (useEffect 사용해서 한 번만!)
   useEffect(() => {
@@ -191,7 +192,14 @@ export default function Weather() {
             ) : (
               <div css={s.moodList}>
                 {weatherTracks.map((t, i) => (
-                  <div key={i} css={s.moodItem}>
+                  <div
+                    key={i}
+                    css={s.moodItem}
+                    onClick={() => {
+                      setSelectedTrack(t);
+                      setIsModalOpen(true);
+                    }}
+                  >
                     <img src={t.image} alt={t.name} css={s.albumArtSmall} />
                     <p className="title">{t.name}</p>
                     <p className="artist">{t.artist}</p>
@@ -214,7 +222,14 @@ export default function Weather() {
             ) : (
               <div css={s.moodList}>
                 {emotionTracks.map((t, i) => (
-                  <div key={i} css={s.moodItem}>
+                  <div
+                    key={i}
+                    css={s.moodItem}
+                    onClick={() => {
+                      setSelectedTrack(t);
+                      setIsModalOpen(true);
+                    }}
+                  >
                     <img src={t.image} alt={t.name} css={s.albumArtSmall} />
                     <p className="title">{t.name}</p>
                     <p className="artist">{t.artist}</p>
@@ -227,6 +242,7 @@ export default function Weather() {
             )}
           </section>
         </div>
+      {isModalOpen && selectedTrack && <TrackModal track={selectedTrack} onClose={() => setIsModalOpen(false)} />}
       </div>
     </div>
   );

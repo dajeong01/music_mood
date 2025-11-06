@@ -9,6 +9,7 @@ import MyPage from "./pages/MyPage/MyPage";
 import { Toaster } from "react-hot-toast";
 import Calendar from "./pages/Calendar/Calendar";
 import SpotifyRedirectHandler from "./pages/Spotify/SpotifyRedirectHandler";
+import Playlist from "./pages/Playlist/Playlist";
 
 function App() {
   ReactModal.setAppElement("#root");
@@ -22,6 +23,7 @@ function App() {
         <Route path="/weather" element={<Weather />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/calendar" element={<Calendar />} />
+        <Route path="/playlist" element={<Playlist />} />
         <Route path="/auth/spotify/redirect" element={<SpotifyRedirectHandler />} />
       </Routes>
       <Toaster position="top-center" reverseOrder={false} />

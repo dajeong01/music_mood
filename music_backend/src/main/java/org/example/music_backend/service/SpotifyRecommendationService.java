@@ -143,6 +143,7 @@ public class SpotifyRecommendationService {
         List<SpotifyTrackDto> result = new ArrayList<>();
         node.get("tracks").get("items").forEach(track -> {
             result.add(SpotifyTrackDto.builder()
+                    .id(track.get("id").asText()) // ✅ 트랙 ID 추가
                     .name(track.get("name").asText())
                     .artist(track.get("artists").get(0).get("name").asText())
                     .image(track.get("album").get("images").get(0).get("url").asText())

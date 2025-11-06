@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class SpotifyTrackDto {
+    private String id;
     private String name;
     private String artist;
     private String image;
